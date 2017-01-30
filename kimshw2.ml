@@ -67,7 +67,7 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor frag deriv =
 				     								  else
 				     									None
 				     	(* ^^ terminal, so we can match the NEXT part of Frag*)
-						| (N nonTermHead)::(nonTermTail) -> (matchRuleList ruleSymbol ruleFunc (matchRuleTerm nonTermTail ruleFunc acceptor frag deriv) frag deriv)
+						| (N nonTermHead)::(nonTermTail) -> (matchRuleList ruleSymbol ruleFunc (ruleFunc ruleSymbol) (matchRuleTerm nonTermTail ruleFunc acceptor frag deriv) frag deriv)
 						(*non terminal, must expand with match ruleList*)
 
 
@@ -75,9 +75,9 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor frag deriv =
 
 (* this is where we check arrowList ---- all possible things that symbol could lead to. 
 eg. Expr -> term binop expr       // arrowList is "term binop expr"*)
-and matchRuleList symbol ruleFunc acceptor frag deriv = 
+and matchRuleList symbol ruleFunc arrowList acceptor frag deriv = 
 (*let arrowList = ruleFunc symbol in *)
-match (ruleFunc symbol) with
+match arrowList with
 	(*if we've exhausted all possible rule groups, return None*)
 	[] -> None
 	(* h is the first possibility, but h can be a list itself. check this single rule, adding to deriv*)
@@ -91,7 +91,7 @@ match (ruleFunc symbol) with
 
 let rec parse_prefix gram acceptor frag = 
 	match gram with
-	| (start, ruleFunc) -> matchRuleList start ruleFunc acceptor frag []
+	| (start, ruleFunc) -> matchRuleList start ruleFunc (ruleFunc start) acceptor frag []
 
 
 
