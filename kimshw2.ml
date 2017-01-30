@@ -4,7 +4,7 @@ let rec createRules nonterminal gram1 =
  	match gram1 with
  	| [] -> []
  	| (left, right)::t -> if left = nonterminal then
- 	                     		right::(createRules left t)
+ 	                     		[right]@(createRules left t)
  	                      else
  	                      		createRules left t 
 
