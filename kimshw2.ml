@@ -62,12 +62,13 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor frag deriv =
 	| _ -> match frag with 
 			| [] -> None
 			| (fragHead)::(fragTail) -> match ruleSymbol with 
+						| (N nonTermHead)::(nonTermTail) -> (matchRuleList (ruleSymbol) (ruleFunc) (ruleFunc ruleSymbol) (matchRuleTerm nonTermTail ruleFunc acceptor frag deriv) frag deriv)
 				     	| (T termHead)::(termTail) -> (if fragHead = termHead then 
-				     								  	matchRuleTerm termTail ruleFunc acceptor fragTail deriv
+				     								  	(matchRuleTerm termTail ruleFunc acceptor fragTail deriv)
 				     								  else
 				     									None)
 				     	(* ^^ terminal, so we can match the NEXT part of Frag*)
-						| (N nonTermHead)::(nonTermTail) -> (matchRuleList (ruleSymbol) (ruleFunc) (ruleFunc ruleSymbol) (matchRuleTerm nonTermTail ruleFunc acceptor frag deriv) frag deriv)
+						
 						(*non terminal, must expand with match ruleList*)
 
 
