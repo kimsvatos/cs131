@@ -58,7 +58,7 @@ type ('nonterminal, 'terminal) symbol =
 
 let rec matchRuleTerm ruleSymbol ruleFunc acceptor frag deriv = 
 	match ruleSymbol with
-	[] -> accept deriv frag
+	[] -> acceptor deriv frag
 	| _ -> match frag with 
 			| [] -> None
 			| (fragHead)::(fragTail) -> match ruleSymbol with 
