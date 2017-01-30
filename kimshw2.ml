@@ -33,18 +33,11 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag=
 	| _ -> match frag with 
 			| [] -> None
 			| (fragHead)::(fragTail) -> match ruleSymbol with 
-						| (N nonTermHead)::(nonTermTail) -> 
-						(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor) deriv frag)
-				     	| (T termHead)::(termTail) -> (if fragHead = termHead then 
-				     								  	(matchRuleTerm ruleFunc termTail acceptor deriv fragTail)
-				     								  else
-				     									None)
-				     
-				     	(* ^^ terminal, so we can match the NEXT part of Frag*)
-						
-						(*non terminal, must expand with match ruleList*)
-
-
+					| (N nonTermHead)::(nonTermTail) -> 
+					(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor) deriv frag)
+				     | (T termHead)::(termTail) -> if fragHead = termHead then 
+				     								  (matchRuleTerm ruleFunc termTail acceptor deriv fragTail)
+				     								else None
 
 
 (* this is where we check arrowList ---- all possible things that symbol could lead to. 
@@ -60,10 +53,11 @@ match arrowList with
 			| Some(x, y) -> Some (x, y)
 			(* we succeeded, return itself *)*)
 
-and matchRuleList start_symbol rule_list_func alter_list accept deriv frag = match alter_list with 
+and matchRuleList start ruleFuc arrowList accept deriv frag =
+ match arrowList with 
 	| [] -> None
-	| h::t -> match (check_single_rule rule_list_func h accept (deriv@[start_symbol,h]) frag) with 
-		| None -> matchRuleList start_symbol rule_list_func t accept deriv frag
+	| h::t -> match (check_single_rule ruleFunc h accept (deriv@[start,h]) frag) with 
+		| None -> matchRuleList start ruleFunc t accept deriv frag
 		| Some(a,b) -> Some(a,b)
 
 
