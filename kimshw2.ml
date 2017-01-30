@@ -84,7 +84,7 @@ match arrowList with
 	(*if we've exhausted all possible rule groups, return None*)
 	[] -> None
 	(* h is the first possibility, but h can be a list itself. check this single rule, adding to deriv*)
-	| h::t-> match matchRuleTerm ruleFunc h acceptor frag (deriv@[(symbol, h)]) with 
+	| h::t-> match (matchRuleTerm (ruleFunc) h acceptor frag (deriv@[(symbol, h)])) with 
 			| None -> (matchRuleTerm symbol ruleFunc t frag deriv)
 			(* Try the next ruleGroup in arrowList as a possibility, which is t, since h is current ruleGroup
 			    leave OUT this part int the deriv*)
