@@ -56,16 +56,16 @@ type ('nonterminal, 'terminal) symbol =
 
 
 
-let rec matchRuleTerm ruleFunc ruleSymbol acceptor frag deriv = 
+let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag = 
 	match ruleSymbol with
 	[] -> acceptor deriv frag
 	| _ -> match frag with 
 			| [] -> None
 			| (fragHead)::(fragTail) -> match ruleSymbol with 
 						| (N nonTermHead)::(nonTermTail) -> 
-						(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor frag deriv) frag deriv)
+						(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor deriv frag) frag deriv)
 				     	| (T termHead)::(termTail) -> (if fragHead = termHead then 
-				     								  	(matchRuleTerm ruleFunc termTail acceptor fragTail deriv)
+				     								  	(matchRuleTerm ruleFunc termTail acceptor deriv fragTail )
 				     								  else
 				     									None)
 				     
@@ -89,10 +89,10 @@ match arrowList with
 			| Some(x, y) -> Some (x, y)
 			(* we succeeded, return itself *)*)
 
-and matchRuleList start_symbol ruleFunc arrowList accept frag d = match arrowList with 
+and matchRuleList start_symbol rule_list_func alter_list accept d frag = match alter_list with 
 	| [] -> None
-	| h::t -> match (matchRuleTerm ruleFunc h accept frag (d@[start_symbol,h]) ) with 
-		| None -> matchRuleList start_symbol ruleFunc t accept frag d
+	| h::t -> match (check_single_rule rule_list_func h accept (d@[start_symbol,h]) frag) with 
+		| None -> check_alternative_list start_symbol rule_list_func t accept d frag
 		| Some(a,b) -> Some(a,b)
 
 
