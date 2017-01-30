@@ -11,7 +11,7 @@ let rec createRules nonterminal gram1 =
 
 let convert_grammar gram1 = 
 	match gram1 with 
-	| (start, rules) -> (start, (fun x -> createRules x rules))
+	| (start, rules) -> (start, (createRules rules))
 ;;
 
 
