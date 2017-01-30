@@ -7,42 +7,13 @@ let rec createRules nonterminal gram1 =
  	                     		right::(createRules left t)
  	                      else
  	                      		createRules left t 
-;;
+
 
 let convert_grammar gram1 = 
 	match gram1 with 
 	| (start, rules) -> (start, (createRules rules))
-;;
 
 
-
-(*Write a function parse_prefix gram that
- returns a matcher for the grammar gram. When applied 
-to an acceptor accept and a fragment frag, the matcher 
-must return the first acceptable match of a prefix of 
-frag, by trying the grammar rules in order; this is not 
-necessarily the shortest nor the longest acceptable
- match. A match is considered to be acceptable if 
-accept succeeds when given a derivation and the suffix
- fragment that immediately follows the matching prefix. 
-When this happens, the matcher returns whatever the acceptor
- returned. If no acceptable match is found, the matcher returns None.*)
-
-(*returns a MATCHER for gram. try grammar rules in order. *)
-
-(*  we have a grammar (start, gramm) and we want to 
-	check if frag matches any start -> rule  *)
-
-(* ruleList is a list of lists of rules ie
-   | Term ->
-	 [[N Num];
-	  [N Lvalue];
-	  [N Incrop; N Lvalue];
-	  [N Lvalue; N Incrop];
-	  [T"("; N Expr; T")"]]
-
-h is the current [ N Num] we are seeing if can match frag
-*)
 
 
 (* start list is a list of list [[blah; blah] ; [blah] ; [blah; blah; blah] ]  
@@ -63,7 +34,7 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag =
 			| [] -> None
 			| (fragHead)::(fragTail) -> match ruleSymbol with 
 						| (N nonTermHead)::(nonTermTail) -> 
-						(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor deriv frag) frag deriv)
+						(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor) deriv frag)
 				     	| (T termHead)::(termTail) -> (if fragHead = termHead then 
 				     								  	(matchRuleTerm ruleFunc termTail acceptor deriv fragTail )
 				     								  else
@@ -96,7 +67,7 @@ and matchRuleList start_symbol rule_list_func alter_list accept d frag = match a
 		| Some(a,b) -> Some(a,b)
 
 
-let rec parse_prefix gram acceptor frag = 
+let  parse_prefix gram acceptor frag = 
 	match gram with
 	| (start, ruleFunc) -> matchRuleList start ruleFunc (ruleFunc start) acceptor [] frag 
 
