@@ -53,7 +53,7 @@ match arrowList with
 			| Some(x, y) -> Some (x, y)
 			(* we succeeded, return itself *)*)
 
-and matchRuleList start ruleFuc arrowList accept deriv frag =
+and matchRuleList start ruleFunc arrowList accept deriv frag =
  match arrowList with 
 	| [] -> None
 	| h::t -> match (check_single_rule ruleFunc h accept (deriv@[start,h]) frag) with 
