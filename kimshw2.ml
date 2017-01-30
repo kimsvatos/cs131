@@ -77,7 +77,7 @@ let rec matchRuleTerm ruleSymbol ruleFunc acceptor frag deriv =
 (* this is where we check arrowList ---- all possible things that symbol could lead to. 
 eg. Expr -> term binop expr       // arrowList is "term binop expr"*)
 let rec matchRuleList symbol ruleFunc acceptor frag deriv = 
-let arrowList = (ruleFunc symbol)
+let arrowList = (ruleFunc symbol) in
 match arrowList with
 	(*if we've exhausted all possible rule groups, return None*)
 	[] -> None
