@@ -79,12 +79,10 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor frag deriv =
 (* this is where we check arrowList ---- all possible things that symbol could lead to. 
 eg. Expr -> term binop expr       // arrowList is "term binop expr"*)
 and matchRuleList symbol ruleFunc arrowList acceptor frag deriv = 
-(*let arrowList = ruleFunc symbol in *)
 match arrowList with
-	(*if we've exhausted all possible rule groups, return None*)
 	[] -> None
 	(* h is the first possibility, but h can be a list itself. check this single rule, adding to deriv*)
-	| h::t-> match (matchRuleTerm (ruleFunc) h acceptor frag (deriv@[(symbol, h)])) with 
+	| h::t-> match (matchRuleTerm ruleFunc h acceptor frag (deriv@[symbol, h])) with 
 			| None -> (matchRuleList symbol ruleFunc t frag deriv)
 			(* Try the next ruleGroup in arrowList as a possibility, which is t, since h is current ruleGroup
 			    leave OUT this part int the deriv*)
