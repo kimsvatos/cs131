@@ -42,7 +42,7 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag=
 and matchRuleList start ruleFunc arrowList accept deriv frag =
  match arrowList with 
 	| [] -> None
-	| h::t -> match (matchRuleTerm ruleFunc h accept (deriv@[start,h]) frag) with 
+	| h::t -> match (matchRuleTerm ruleFunc h accept (deriv::[start,h]) frag) with 
 		| None -> matchRuleList start ruleFunc t accept deriv frag
 		| Some(a,b) -> Some(a,b)
 
