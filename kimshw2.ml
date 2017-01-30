@@ -59,14 +59,16 @@ type ('nonterminal, 'terminal) symbol =
 let rec matchRuleTerm ruleFunc ruleSymbol acceptor frag deriv = 
 	match ruleSymbol with
 	[] -> acceptor deriv frag
-	| _ -> match frag with 
+	| _ -> match frag with (
 			| [] -> None
 			| (fragHead)::(fragTail) -> match ruleSymbol with 
-						| (N nonTermHead)::(nonTermTail) -> (matchRuleList (ruleSymbol) (ruleFunc) (ruleFunc ruleSymbol) (matchRuleTerm nonTermTail ruleFunc acceptor frag deriv) frag deriv)
+						| (N nonTermHead)::(nonTermTail) -> 
+						(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor frag deriv) frag deriv)
 				     	| (T termHead)::(termTail) -> (if fragHead = termHead then 
-				     								  	(matchRuleTerm termTail ruleFunc acceptor fragTail deriv)
+				     								  	(matchRuleTerm ruleFunc termTail acceptor fragTail deriv)
 				     								  else
 				     									None)
+				     )
 				     	(* ^^ terminal, so we can match the NEXT part of Frag*)
 						
 						(*non terminal, must expand with match ruleList*)
