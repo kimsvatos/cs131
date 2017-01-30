@@ -38,18 +38,6 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag=
 				     | (T termHead)::(termTail) -> if fragHead = termHead then 
 				     								  (matchRuleTerm ruleFunc termTail acceptor deriv fragTail) else None
 
-(* this is where we check arrowList ---- all possible things that symbol could lead to. 
-eg. Expr -> term binop expr       // arrowList is "term binop expr"*)
-(*and matchRuleList symbol ruleFunc arrowList acceptor frag deriv = 
-match arrowList with
-	[] -> None
-	(* h is the first possibility, but h can be a list itself. check this single rule, adding to deriv*)
-	| h::t-> match (matchRuleTerm ruleFunc h acceptor frag (deriv@[symbol, h])) with 
-			| None -> (matchRuleList symbol ruleFunc t frag deriv)
-			(* Try the next ruleGroup in arrowList as a possibility, which is t, since h is current ruleGroup
-			    leave OUT this part int the deriv*)
-			| Some(x, y) -> Some (x, y)
-			(* we succeeded, return itself *)*)
 
 and matchRuleList start ruleFunc arrowList accept deriv frag =
  match arrowList with 
