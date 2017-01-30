@@ -36,9 +36,7 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag=
 					| (N nonTermHead)::(nonTermTail) -> 
 					(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor) deriv frag)
 				     | (T termHead)::(termTail) -> if fragHead = termHead then 
-				     								  (matchRuleTerm ruleFunc termTail acceptor deriv fragTail)
-				     								else None
-
+				     								  (matchRuleTerm ruleFunc termTail acceptor deriv fragTail) else None
 
 (* this is where we check arrowList ---- all possible things that symbol could lead to. 
 eg. Expr -> term binop expr       // arrowList is "term binop expr"*)
