@@ -62,7 +62,7 @@ match arrowList with
 
 and matchRuleList start_symbol rule_list_func alter_list accept frag deriv = match alter_list with 
 	| [] -> None
-	| h::t -> match (check_single_rule rule_list_func h accept frag (deriv::[start_symbol,h])) with 
+	| h::t -> match (check_single_rule rule_list_func h accept frag (deriv@[start_symbol,h])) with 
 		| None -> check_alternative_list start_symbol rule_list_func t accept frag deriv
 		| Some(a,b) -> Some(a,b)
 
