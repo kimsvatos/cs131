@@ -27,7 +27,7 @@ type ('nonterminal, 'terminal) symbol =
 
 
 
-l(*et rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag= 
+(*let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag= 
 	match ruleSymbol with
 	[] -> acceptor deriv frag
 	| _ -> match frag with 
