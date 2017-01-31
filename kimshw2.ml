@@ -23,10 +23,10 @@ type ('nonterminal, 'terminal) symbol =
 
 
 let rec matchRuleTerm ruleSymbol ruleFunc acceptor deriv frag= 
-	(*match ruleSymbol with*)
-	(*[] -> acceptor deriv frag*) 
+	match ruleSymbol with
+	[] -> acceptor deriv frag
 	(* there are no rules left, check if acceptor is chill *)
-(*	| _ ->*)match frag with 
+	| _ -> match frag with 
 			| [] -> if ruleSymbol = [] then (acceptor deriv frag) else None 
 			(* ^^ we are at the end of the fragment, but have rules left. Cant work. None*)
 			| (fragHead)::(fragTail) -> match ruleSymbol with 
