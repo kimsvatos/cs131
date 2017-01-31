@@ -30,14 +30,28 @@ type ('nonterminal, 'terminal) symbol =
 let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag= 
 	match ruleSymbol with
 	[] -> acceptor deriv frag
-	| _ -> match frag with 
+	| headRule::tailRule -> match headRule with
+						| (T term) -> (
+								match frag with 
+								| [] -> None
+								| headFrag::tailFrag -> if headFrag = termHead then 
+														matchRuleTerm ruleFunc tailRule acceptor deriv tailFrag
+													    else None
+							) 
+						| (N nonterm) -> (
+						  matchRuleList headRule ruleFunc (ruleFunc headRule) accept deriv frag)
+
+
+
+
+(*
 			| [] -> None
-			| (fragHead)::(fragTail) -> match ruleSymbol with 
+			| (fragHead)::(fragTail) -> match fragHead with 
 					| (N nonTermHead)::(nonTermTail) -> 
 					(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor) deriv frag)
 				     | (T termHead)::(termTail) -> if fragHead = termHead then 
 				     								  (matchRuleTerm ruleFunc termTail acceptor deriv fragTail) else None
-
+*)
 
 and matchRuleList start ruleFunc arrowList accept deriv frag =
  match arrowList with 
