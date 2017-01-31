@@ -34,7 +34,7 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag=
 						| (T term) -> (
 								match frag with 
 								| [] -> None
-								| headFrag::tailFrag -> if headFrag = termHead then 
+								| headFrag::tailFrag -> if headFrag = headRule then 
 														matchRuleTerm ruleFunc tailRule acceptor deriv tailFrag
 													    else None
 							) 
