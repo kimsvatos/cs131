@@ -39,7 +39,7 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag=
 													    else None
 							) 
 						| (N nonterm) -> (
-						  matchRuleList headRule ruleFunc (ruleFunc headRule) accept deriv frag)
+						  matchRuleList headRule ruleFunc (ruleFunc headRule) acceptor deriv frag)
 
 
 
