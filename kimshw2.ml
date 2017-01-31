@@ -52,13 +52,6 @@ match ruleSymbol with
 				else None))
 
 
-	| _ -> match frag with 
-			| [] -> None
-			| (fragHead)::(fragTail) -> match ruleSymbol with 
-					| (N nonTermHead)::(nonTermTail) -> 
-					(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor) deriv frag)
-				     | (T termHead)::(termTail) -> if fragHead = termHead then 
-				     								  (matchRuleTerm ruleFunc termTail acceptor deriv fragTail) else None
 
 and matchRuleList start ruleFunc arrowList accept deriv frag =
  match arrowList with 
