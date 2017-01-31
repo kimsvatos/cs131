@@ -27,7 +27,7 @@ type ('nonterminal, 'terminal) symbol =
 
 
 
-let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag= 
+l(*et rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag= 
 	match ruleSymbol with
 	[] -> acceptor deriv frag
 	| _ -> match frag with 
@@ -37,7 +37,28 @@ let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag=
 					(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor) deriv frag)
 				     | (T termHead)::(termTail) -> if fragHead = termHead then 
 				     								  (matchRuleTerm ruleFunc termTail acceptor deriv fragTail) else None
+*)
+let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag= 
+match ruleSymbol with
+	[] -> acceptor deriv frag
+	| (N ntRuleHead)::(ntRuleTail) -> (match frag with
+					| [] -> None
+					| (fragHead)::(fragTail) -> (matchRuleList (ntRuleHead) (ruleFunc) (ruleFunc ntRuleHead) (matchRuleTerm ruleFunc ntRuleTail acceptor) deriv frag)
 
+				)
+	| (T tRuleHead)::(tRuleTail) -> (match frag with 
+					| [] -> None
+					| (fragHead)::(fragTail) -> (if fragHead = tRuleHead then (matchRuleTerm ruleFunc tRuleTail acceptor deriv fragTail) 
+				else None))
+
+
+	| _ -> match frag with 
+			| [] -> None
+			| (fragHead)::(fragTail) -> match ruleSymbol with 
+					| (N nonTermHead)::(nonTermTail) -> 
+					(matchRuleList (nonTermHead) (ruleFunc) (ruleFunc nonTermHead) (matchRuleTerm ruleFunc nonTermTail acceptor) deriv frag)
+				     | (T termHead)::(termTail) -> if fragHead = termHead then 
+				     								  (matchRuleTerm ruleFunc termTail acceptor deriv fragTail) else None
 
 and matchRuleList start ruleFunc arrowList accept deriv frag =
  match arrowList with 
