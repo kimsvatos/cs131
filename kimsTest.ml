@@ -1,3 +1,18 @@
+This repository
+Pull requests
+Issues
+Gist
+ @kimsvatos
+ Unwatch 1
+  Star 0
+  Fork 0 kimsvatos/cs131
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Pulse  Graphs  Settings
+Tree: 73926cf97c Find file Copy pathcs131/kimsTest.ml
+73926cf  8 minutes ago
+@kimsvatos kimsvatos add tests
+1 contributor
+RawBlameHistory     
+165 lines (140 sloc)  5.71 KB
 let accept_all derivation string = Some (derivation, string)
 let accept_empty_suffix derivation = function
    | [] -> Some (derivation, [])
@@ -159,6 +174,6 @@ let ucla_answer =
  		(Parties, [T "Fun"]); (UCLA, [T "College"] )], ["Fun"] ) )
 
 
-(parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"])
+
 
 
