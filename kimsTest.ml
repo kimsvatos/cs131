@@ -176,5 +176,5 @@ let repet_bruin_grammar =
  		(UCLA, [T "College"])], ["College"] ))
 
 
- let test2test = (parse_prefix bruin_grammar accept_fun ["College";"College"; "College"])
+ let test2test = (parse_prefix repet_bruin_grammar accept_fun ["College";"College"; "College"])
 
