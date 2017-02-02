@@ -167,12 +167,12 @@ let accept_college derivation frag =
 
 let repet_bruin_grammar =
 (UCLA, function
-	| UCLA -> [[N UCLA; T "College"];
+	| UCLA -> [[ T "College"; N UCLA];
 				[T "College"]]
 	)
 
  let test_2 =
- ((parse_prefix bruin_grammar accept_fun ["College";"College"; "College"]) = Some([ (UCLA, [N UCLA; T "College"]); 
+ ((parse_prefix bruin_grammar accept_fun ["College";"College"; "College"]) = Some([ (UCLA, [ T "College", N UCLA]); 
  		(UCLA, [T "College"])], ["College"] ))
 
 
