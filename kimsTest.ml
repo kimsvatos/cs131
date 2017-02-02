@@ -179,7 +179,7 @@ let bad_grammar =
 
  let test_2 =
  ((parse_prefix bad_grammar accept_all ["ick";"Disgusting"]) = 
- 	Some([ (Bad, [N Gross; T "Disgusting"])], [])) 
+ 	Some([ (Bad, [N Gross; T "Disgusting"]); (Gross, [T "ick"])], [])) 
 
 
  let test2test = (parse_prefix bad_grammar accept_all ["ick";"Disgusting"])
