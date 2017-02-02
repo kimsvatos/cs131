@@ -159,6 +159,6 @@ let ucla_answer =
  		(Parties, [T "Fun"]); (UCLA, [T "College"] )], ["Fun"] ) )
 
 
-
+(parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"])
 
 
