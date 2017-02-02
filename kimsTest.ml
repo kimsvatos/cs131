@@ -126,7 +126,9 @@ type ucla_nonterminals =
 | UCLA | Class | Sleep | Parties  
 
 let accept_fun derivation frag = 
-	if frag = "Fun" then Some (derivation, frag) else None
+	match frag with
+	| [] -> None
+	| h::t -> if h = "Fun" then Some (derivation, frag) else None
 
 
 let bruin_grammar =
