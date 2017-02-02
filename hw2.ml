@@ -34,6 +34,9 @@ type ('nonterminal, 'terminal) symbol =
 				     								  (matchRuleTerm ruleFunc termTail acceptor deriv fragTail) else None
 *)
 let rec matchRuleTerm ruleFunc ruleSymbol acceptor deriv frag= 
+match frag with 
+| [] -> None
+| _ -> 
 match ruleSymbol with
 	[] -> acceptor deriv frag
 	| (N ntRuleHead)::(ntRuleTail) -> (match frag with
