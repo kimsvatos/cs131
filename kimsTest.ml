@@ -173,7 +173,7 @@ let bad_grammar =
 	| Bad -> [[N Gross; T "Disgusting"];
 				[[T "Blech"; N Gross]];
 				[[N Ew; ]]
-	| Ew -> [[N Gross; N Gross]
+	| Ew -> [[N Gross; N Gross]]
 	| Gross -> [["ick"]; ["no"]]
 	)
 
