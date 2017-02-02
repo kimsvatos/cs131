@@ -157,9 +157,9 @@ let ucla_answer =
 
  let test_1 =
  ((parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"]) = Some([ (UCLA, [N Parties; T "College"]); 
- 		(Parties, [T "Fun"]); (UCLA, [T "College"] )], ["Fun"] ) )
+ 		(Parties, [T "Fun"]); (UCLA, [T "College"] )], ["Fun"] ))
 
 
 
-(parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"])
+let test999 = (parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"])
 
