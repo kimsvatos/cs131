@@ -159,23 +159,27 @@ let ucla_answer =
  ((parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"]) = Some([ (UCLA, [N Parties; T "College"]); 
  		(Parties, [T "Fun"])], ["Fun"] ))
 
-let accept_college derivation frag = 
+let accept_none derivation frag = 
 	match frag with
-	| [] -> None
-	| h::t -> if h = "College" then Some (derivation, frag) else None
+	| [] -> Some(derivation, frag)
+	| _ -> None
+
+type bad_nonterminals =
+| Bad | Ew | Gross   
 
 
-let repet_bruin_grammar =
-(UCLA, function
-	| UCLA -> [[ T "College"; N Class];
-				[T "College"]]
-	| Class -> [[T "Hard"; N UCLA]]
+let bad_grammar =
+(Bad, function
+	| Bad -> [[N Gross; T "Disgusting"];
+				[[T "Blech"; N Gross]];
+				[[N Ew; ]]
+	| Ew -> [[N Gross; N Gross]
+	| Gross -> [["ick"]; ["no"]]
 	)
 
  let test_2 =
- ((parse_prefix bruin_grammar accept_all ["College";"Blah"; "Blah"]) = 
- 	Some([ (UCLA, [T "College"])], ["Blah"; "Blah"])) 
+ ((parse_prefix bruin_grammar accept_all ["ick";"Disgusting"]) = 
+ 	Some([ (Bad, [N Gross; T "Disgusting"])], [])) 
 
 
- let test2test = (parse_prefix repet_bruin_grammar accept_fun ["College";"Blah"; "Blah"])
-
+ let test2test = (parse_prefix bruin_grammar accept_all ["ick";"Disgusting"])
