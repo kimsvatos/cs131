@@ -182,4 +182,4 @@ let bad_grammar =
  	Some([ (Bad, [N Gross; T "Disgusting"])], [])) 
 
 
- let test2test = (parse_prefix bruin_grammar accept_all ["ick";"Disgusting"])
+ let test2test = (parse_prefix bad_grammar accept_all ["ick";"Disgusting"])
