@@ -130,12 +130,21 @@ let accept_fun derivation frag =
 
 
 let bruin_grammar =
+(UCLA, function
+	| UCLA -> [[N Parties; T "College"];
+				[N UCLA; N Parties]]
+	| Parties -> [T "Fun"]
+	| Class -> [N Sleep]
+	| Sleep -> [N Class]
+	)
+
+(*)
 (UCLA,
 [ Parties, [T"Fun"];
 Class, [N Sleep];
 Sleep, [N Class];
 UCLA, [N Parties; T"College"];
-UCLA, [N UCLA; N Parties]])
+UCLA, [N UCLA; N Parties]])*)
 
 let ucla_answer =
 (UCLA,
