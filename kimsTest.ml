@@ -174,7 +174,7 @@ let bad_grammar =
 				[T "Blech"; N Gross];
 				[N Ew ]]
 	| Ew -> [[N Gross; N Gross]]
-	| Gross -> [["ick"]; ["no"]]
+	| Gross -> [[T "ick"]; [T "no"]]
 	)
 
  let test_2 =
