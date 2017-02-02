@@ -173,7 +173,7 @@ let repet_bruin_grammar =
 
  let test_2 =
  ((parse_prefix bruin_grammar accept_fun ["College";"College"; "College"]) = 
- 	Some([ (UCLA, [T "College", N UCLA]); 
+ 	Some([ (UCLA, [T "College"; N UCLA]); 
  		(UCLA, [T "College"])], ["College"] ))
 
 
