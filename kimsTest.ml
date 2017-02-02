@@ -159,7 +159,22 @@ let ucla_answer =
  ((parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"]) = Some([ (UCLA, [N Parties; T "College"]); 
  		(Parties, [T "Fun"])], ["Fun"] ))
 
+let accept_college derivation frag = 
+	match frag with
+	| [] -> None
+	| h::t -> if h = "College" then Some (derivation, frag) else None
 
 
-let test999 = (parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"])
+let repet_bruin_grammar =
+(UCLA, function
+	| UCLA -> [[N UCLA; T "College"];
+				[T "College"]]
+	)
+
+ let test_2 =
+ ((parse_prefix bruin_grammar accept_fun ["College";"College"; "College"]) = Some([ (UCLA, [N UCLA; T "College"]); 
+ 		(UCLA, [T "College"])], ["College"] ))
+
+
+ let test2test = (parse_prefix bruin_grammar accept_fun ["College";"College"; "College"])
 
