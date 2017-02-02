@@ -161,5 +161,5 @@ let ucla_answer =
 
 
 
-
+(parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"])
 
