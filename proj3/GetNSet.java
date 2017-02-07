@@ -63,9 +63,9 @@ class GetNSet implements State {
 	}
 
    // public int iVal = aValue.get(i);
-    aValue.set(i, iVal-1);
+    aValue.set(i, aValue.get(i)-1);
     //public int jVal = aValue.get(j);
-    aValue.set(j, jVal+1);
+    aValue.set(j, aValue.get(j)+1);
 
 	//value[i]--;
 	//value[j]++;
