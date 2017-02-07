@@ -25,7 +25,7 @@ class UnsafeMemory {
 			s = new BetterSafe(stateArg, maxval);
 		else if (args[0].equals("BetterSorry"))
 			s = new BetterSorry(stateArg, maxval);
-
+		
 	    else
 		throw new Exception(args[0]);
 	    dowork(nThreads, nTransitions, s);
