@@ -7,7 +7,8 @@ class GetNSet implements State {
  // matches size and elements of value byte array
     private AtomicIntegerArray aValue; 
 
-    GetNSet(byte[] v) { 
+    GetNSet(byte[] v) {
+    System.out.println("getnset initial\n"); 
         value = v; 
         int[] holderArr = new int[v.length];
         int i = 0;
@@ -22,6 +23,7 @@ class GetNSet implements State {
 
 
     GetNSet(byte[] v, byte m) { 
+        System.out.println("getnset initial\n");
         value = v; 
         int[] holderArr = new int[v.length];
         int i = 0;
