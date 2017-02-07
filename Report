@@ -6,7 +6,7 @@ examine the right hand sides to nonterminals-- and if
 the program encountered yet another non-terminal, I could call yet
 another nested function...I realized this approach was non feasable.
 
-Rather than infinitely nesting, I noticed there were really 
+Rather than indefinitely nesting, I noticed there were really 
 only two cases: we either are examining the right hand side as a whole,
 or examining a single piece of that right hand side. If that single 
 piece of the right hand side is a non terminal, it becomes the 
@@ -52,14 +52,11 @@ My functions would go into an infinite loop calling each other, with no
 way to stop or break as frag is not being used up and you always encounter
 a nonterminal and try to expand it before trying to match it. 
 
-While doing final testing I noticed that my grammar goes into an infinite loop
-when presented with the following test case: 
-
-
+Examples of a grammar and test case that sends my code into an infinite loop:
 
 let repet_bruin_grammar =
 (UCLA, function
-	| UCLA -> [[ T "College"; N UCLA];
+	| UCLA -> [[ N UCLA; T "College"];
 				[T "College"]]
 	)
 
@@ -68,8 +65,4 @@ let repet_bruin_grammar =
  	Some([ (UCLA, [T "College"; N UCLA]); 
  		(UCLA, [T "College"])], ["College"] ))
 
- In my function "matchRuleTerm" I added a match with "frag" first-- checking
- to see if frag is empty will prevent SOME infinite loops, such as this one.
 
- However, it will still go into an infinite loop when the first term is a 
- nonterminal (eg, if "T College" and "N UCLA" were swapped in the rule)

@@ -1,40 +1,185 @@
 
+let accept_all derivation string = Some (derivation, string)
+let accept_empty_suffix derivation = function
+   | [] -> Some (derivation, [])
+   | _ -> None
 
-type ('nonterminal, 'terminal) symbol =
-	| N of 'nonterminal
-	| T of 'terminal
+(* An example grammar for a small subset of Awk, derived from but not
+   identical to the grammar in
+   <http://web.cs.ucla.edu/classes/winter06/cs132/hw/hw1.html>.
+   Note that this grammar is not the same as Homework 1; it is
+   instead the same as the grammar under "Theoretical background"
+   above.  *)
 
-let rec rule_list rules nt  = match rules with
-	| [] -> []
-	| h::t -> match h with 
-		| lhs,rhs -> if(lhs = nt) then [rhs]@(rule_list t nt) else rule_list t nt
+type awksub_nonterminals =
+  | Expr | Term | Lvalue | Incrop | Binop | Num
 
-(*  currying function with missing params become function that takes the missing param(s) *)
-let convert_grammar gram1 = match gram1 with
-	| start, rules -> (start, (rule_list rules))
+let awkish_grammar =
+  (Expr,
+   function
+     | Expr ->
+         [[N Term; N Binop; N Expr];
+          [N Term]]
+     | Term ->
+	 [[N Num];
+	  [N Lvalue];
+	  [N Incrop; N Lvalue];
+	  [N Lvalue; N Incrop];
+	  [T"("; N Expr; T")"]]
+     | Lvalue ->
+	 [[T"$"; N Expr]]
+     | Incrop ->
+	 [[T"++"];
+	  [T"--"]]
+     | Binop ->
+	 [[T"+"];
+	  [T"-"]]
+     | Num ->
+	 [[T"0"]; [T"1"]; [T"2"]; [T"3"]; [T"4"];
+	  [T"5"]; [T"6"]; [T"7"]; [T"8"]; [T"9"]])
 
-(* rhs is a single rule *)
-(* check the current rhs and see if it matches with frag, by comparing terminals to terminals. If encounter a non-terminal, call check_alternative_list on that symbol *)
-(* look into each symbol, if it is non-terminal, call check_alternative_list on list of rules starting with that symbol, call check_single_rule on rest of symbols and pass it as new acceptor *)
-(* if it is terminal symbol, compare it to frag *)
-let rec check_single_rule rule_list_func rhs accept d frag = 
-	match rhs with 
-	| [] -> accept d frag
-	| _ -> match frag with 
-		| [] -> None
-		| h::t -> match rhs with 
-			| (N n_ter) :: n_t -> (check_alternative_list n_ter rule_list_func (rule_list_func n_ter) (check_single_rule rule_list_func n_t accept) d frag)
-			| (T ter) :: t_t -> if ter = h then (check_single_rule rule_list_func t_t accept d t) else None
-	
-(* start_symbol is the symbol that rules in alter_list start with *)
-(* rule_list_func is the method that generates list of right-hand-sides for a nonterminal given *)
-(* alter_list is list of rhs to check *)
-(* the order could not be reversed, rules that come earlier should remain in front of list *)
-and check_alternative_list start_symbol rule_list_func alter_list accept d frag = match alter_list with 
+let test0 =
+  ((parse_prefix awkish_grammar accept_all ["ouch"]) = None)
+
+let test1 =
+  ((parse_prefix awkish_grammar accept_all ["9"])
+   = Some ([(Expr, [N Term]); (Term, [N Num]); (Num, [T "9"])], []))
+
+let test2 =
+  ((parse_prefix awkish_grammar accept_all ["9"; "+"; "$"; "1"; "+"])
+   = Some
+       ([(Expr, [N Term; N Binop; N Expr]); (Term, [N Num]); (Num, [T "9"]);
+	 (Binop, [T "+"]); (Expr, [N Term]); (Term, [N Lvalue]);
+	 (Lvalue, [T "$"; N Expr]); (Expr, [N Term]); (Term, [N Num]);
+	 (Num, [T "1"])],
+	["+"]))
+
+let test3 =
+  ((parse_prefix awkish_grammar accept_empty_suffix ["9"; "+"; "$"; "1"; "+"])
+   = None)
+
+(* This one might take a bit longer.... *)
+let test4 =
+ ((parse_prefix awkish_grammar accept_all
+     ["("; "$"; "8"; ")"; "-"; "$"; "++"; "$"; "--"; "$"; "9"; "+";
+      "("; "$"; "++"; "$"; "2"; "+"; "("; "8"; ")"; "-"; "9"; ")";
+      "-"; "("; "$"; "$"; "$"; "$"; "$"; "++"; "$"; "$"; "5"; "++";
+      "++"; "--"; ")"; "-"; "++"; "$"; "$"; "("; "$"; "8"; "++"; ")";
+      "++"; "+"; "0"])
+  = Some
+     ([(Expr, [N Term; N Binop; N Expr]); (Term, [T "("; N Expr; T ")"]);
+       (Expr, [N Term]); (Term, [N Lvalue]); (Lvalue, [T "$"; N Expr]);
+       (Expr, [N Term]); (Term, [N Num]); (Num, [T "8"]); (Binop, [T "-"]);
+       (Expr, [N Term; N Binop; N Expr]); (Term, [N Lvalue]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term; N Binop; N Expr]);
+       (Term, [N Incrop; N Lvalue]); (Incrop, [T "++"]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term; N Binop; N Expr]);
+       (Term, [N Incrop; N Lvalue]); (Incrop, [T "--"]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term; N Binop; N Expr]);
+       (Term, [N Num]); (Num, [T "9"]); (Binop, [T "+"]); (Expr, [N Term]);
+       (Term, [T "("; N Expr; T ")"]); (Expr, [N Term; N Binop; N Expr]);
+       (Term, [N Lvalue]); (Lvalue, [T "$"; N Expr]);
+       (Expr, [N Term; N Binop; N Expr]); (Term, [N Incrop; N Lvalue]);
+       (Incrop, [T "++"]); (Lvalue, [T "$"; N Expr]); (Expr, [N Term]);
+       (Term, [N Num]); (Num, [T "2"]); (Binop, [T "+"]); (Expr, [N Term]);
+       (Term, [T "("; N Expr; T ")"]); (Expr, [N Term]); (Term, [N Num]);
+       (Num, [T "8"]); (Binop, [T "-"]); (Expr, [N Term]); (Term, [N Num]);
+       (Num, [T "9"]); (Binop, [T "-"]); (Expr, [N Term]);
+       (Term, [T "("; N Expr; T ")"]); (Expr, [N Term]); (Term, [N Lvalue]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term]); (Term, [N Lvalue]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term]); (Term, [N Lvalue]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term]); (Term, [N Lvalue; N Incrop]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term]); (Term, [N Lvalue; N Incrop]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term]); (Term, [N Incrop; N Lvalue]);
+       (Incrop, [T "++"]); (Lvalue, [T "$"; N Expr]); (Expr, [N Term]);
+       (Term, [N Lvalue; N Incrop]); (Lvalue, [T "$"; N Expr]); (Expr, [N Term]);
+       (Term, [N Num]); (Num, [T "5"]); (Incrop, [T "++"]); (Incrop, [T "++"]);
+       (Incrop, [T "--"]); (Binop, [T "-"]); (Expr, [N Term]);
+       (Term, [N Incrop; N Lvalue]); (Incrop, [T "++"]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term]); (Term, [N Lvalue; N Incrop]);
+       (Lvalue, [T "$"; N Expr]); (Expr, [N Term]);
+       (Term, [T "("; N Expr; T ")"]); (Expr, [N Term]);
+       (Term, [N Lvalue; N Incrop]); (Lvalue, [T "$"; N Expr]); (Expr, [N Term]);
+       (Term, [N Num]); (Num, [T "8"]); (Incrop, [T "++"]); (Incrop, [T "++"]);
+       (Binop, [T "+"]); (Expr, [N Term]); (Term, [N Num]); (Num, [T "0"])],
+      []))
+
+let rec contains_lvalue = function
+  | [] -> false
+  | (Lvalue,_)::_ -> true
+  | _::rules -> contains_lvalue rules
+
+let accept_only_non_lvalues rules frag =
+  if contains_lvalue rules
+  then None
+  else Some (rules, frag)
+
+let test5 =
+  ((parse_prefix awkish_grammar accept_only_non_lvalues
+      ["3"; "-"; "4"; "+"; "$"; "5"; "-"; "6"])
+   = Some
+      ([(Expr, [N Term; N Binop; N Expr]); (Term, [N Num]); (Num, [T "3"]);
+	(Binop, [T "-"]); (Expr, [N Term]); (Term, [N Num]); (Num, [T "4"])],
+       ["+"; "$"; "5"; "-"; "6"]))
+
+
+type ucla_nonterminals =
+| UCLA | Class | Sleep | Parties  
+
+let accept_fun derivation frag = 
+	match frag with
 	| [] -> None
-	| h::t -> match (check_single_rule rule_list_func h accept (d@[start_symbol,h]) frag) with 
-		| None -> check_alternative_list start_symbol rule_list_func t accept d frag
-		| Some(a,b) -> Some(a,b)
+	| h::t -> if h = "Fun" then Some (derivation, frag) else None
 
-let parse_prefix gram accept frag = match gram with 
-	| (start, rule_list_func) -> check_alternative_list start rule_list_func (rule_list_func start) accept [] frag
+
+let bruin_grammar =
+(UCLA, function
+	| UCLA -> [[N Parties; T "College"];
+				[N UCLA; N Parties]]
+	| Parties -> [[T "Fun"]]
+	| Class -> [[N Sleep]]
+	| Sleep -> [[N Class]]
+	)
+
+(*
+(UCLA,
+[ Parties, [T"Fun"];
+Class, [N Sleep];
+Sleep, [N Class];
+UCLA, [N Parties; T"College"];
+UCLA, [N UCLA; N Parties]])*)
+
+let ucla_answer =
+(UCLA,
+ [ Parties, [T"Fun"];
+ UCLA, [N Parties; T"College"];
+ UCLA, [N UCLA; N Parties]])
+
+ let test_1 =
+ ((parse_prefix bruin_grammar accept_fun ["Fun";"College"; "Fun"]) = Some([ (UCLA, [N Parties; T "College"]); 
+ 		(Parties, [T "Fun"])], ["Fun"] ))
+
+let accept_none derivation frag = 
+	match frag with
+	| [] -> Some(derivation, frag)
+	| _ -> None
+
+type bad_nonterminals =
+| Bad | Ew | Gross   
+
+
+let bad_grammar =
+(Bad, function
+	| Bad -> [[N Gross; T "Disgusting"];
+				[T "Blech"; N Gross];
+				[N Ew ]]
+	| Ew -> [[N Gross; N Gross]]
+	| Gross -> [[T "ick"]; [T "no"]]
+	)
+
+ let test_2 =
+ ((parse_prefix bad_grammar accept_all ["ick";"Disgusting"]) = 
+ 	Some([ (Bad, [N Gross; T "Disgusting"]); (Gross, [T "ick"])], [])) 
+
+
+ let test2test = (parse_prefix bad_grammar accept_all ["ick";"Disgusting"])
