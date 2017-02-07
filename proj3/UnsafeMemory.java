@@ -16,12 +16,12 @@ class UnsafeMemory {
 	    else if (args[0].equals("Synchronized"))
 		s = new SynchronizedState(stateArg, maxval);
 	    
-	    else if (args[0].equals("Unsynchronized")){
+	    else if (args[0].equals("Unsynchronized")) {
 	    	System.out.println("unsynch");
 			s = new Unsynchronized(stateArg, maxval);
 		}
 
-		else if (args[0].equals("GetNSet")){
+		else if (args[0].equals("GetNSet")) {
 			System.out.println("getnset\n");
 			s = new GetNSet(stateArg, maxval);
 		}
