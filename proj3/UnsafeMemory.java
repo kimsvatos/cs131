@@ -17,7 +17,7 @@ class UnsafeMemory {
 		s = new SynchronizedState(stateArg, maxval);
 	    
 	    else if (args[0].equals("Unsynchronized")){
-	    	System.out.println("unsynch\n");
+	    	System.out.println("unsynch");
 			s = new Unsynchronized(stateArg, maxval);
 		}
 
