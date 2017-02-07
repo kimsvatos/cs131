@@ -4,7 +4,7 @@ class GetNSetimplements State {
     private AtomicIntegerArray value;
     private byte maxval;
 
-    GetNSetState(byte[] v) { 
+    GetNSet(byte[] v) { 
         value = new AtomicIntegerArray(v.length);
         for (int i = 0; i < v.length; i++) {
             value.set(i, v[i]);
@@ -12,7 +12,7 @@ class GetNSetimplements State {
         maxval = 127; 
     }
 
-    GetNSetState(byte[] v, byte m) { 
+    GetNSet(byte[] v, byte m) { 
         value = new AtomicIntegerArray(v.length);
         for (int i = 0; i < v.length; i++) {
             value.set(i, v[i]);
