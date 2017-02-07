@@ -1,6 +1,6 @@
 import java.util.concurrent.atomic.AtomicIntegerArray;
 
-class GetNSetState implements State {
+class GetNSetimplements State {
     private AtomicIntegerArray value;
     private byte maxval;
 
