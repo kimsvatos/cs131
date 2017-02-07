@@ -40,6 +40,7 @@ class GetNSet implements State {
     public int size() { return aValue.length(); }
 
     public byte[] current() { 
+        System.out.println("start current\n");
         value = new byte[aValue.length()];
         int i = 0; 
         while (i < aValue.length()){
