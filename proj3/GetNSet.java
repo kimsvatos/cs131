@@ -19,11 +19,12 @@ class GetNSet implements State {
 
         maxval = 127; 
         aValue = new AtomicIntegerArray(holderArr);
+        System.out.println("getnset initial END 1\n");
     }
 
 
     GetNSet(byte[] v, byte m) { 
-        System.out.println("getnset initial\n");
+        System.out.println("getnset initial 2\n");
         value = v; 
         int[] holderArr = new int[v.length];
         int i = 0;
@@ -34,6 +35,7 @@ class GetNSet implements State {
 
         maxval = m; 
         aValue = new AtomicIntegerArray(holderArr);
+        System.out.println("getnset initial END 2\n");
     }
 
 
