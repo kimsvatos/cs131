@@ -55,8 +55,8 @@ class GetNSet implements State {
 
     public boolean swap(int i, int j) {
 
-    public int iVal; = aValue.get(i);
-    public int jVal; = aValue.get(j);
+    public int iVal = aValue.get(i);
+    public int jVal = aValue.get(j);
     //System.out.println("swap " + iVal + " " + jVal  + "\n");
 	if (iVal <= 0 || jVal >= maxval) {
 	    return false;
