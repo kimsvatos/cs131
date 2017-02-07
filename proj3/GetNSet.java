@@ -44,6 +44,7 @@ class GetNSet implements State {
             value[i] = (byte) aValue.get(i);
             i++;
         }
+        return value;
 
      }
 
