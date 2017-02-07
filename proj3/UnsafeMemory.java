@@ -19,13 +19,15 @@ class UnsafeMemory {
 	    else if (args[0].equals("Unsynchronized"))
 			s = new Unsynchronized(stateArg, maxval);
 
-		else if (args[0].equals("GetNSet"))
+		else if (args[0].equals("GetNSet")){
+			System.out.println("getnset\n");
 			s = new GetNSet(stateArg, maxval);
+		}
 		else if (args[0].equals("BetterSafe"))
 			s = new BetterSafe(stateArg, maxval);
 		else if (args[0].equals("BetterSorry"))
 			s = new BetterSorry(stateArg, maxval);
-		
+
 	    else
 		throw new Exception(args[0]);
 	    dowork(nThreads, nTransitions, s);
