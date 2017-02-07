@@ -34,8 +34,8 @@ class GetNSet implements State {
         if (value.get(i) <= 0 || value.get(j) >= maxval) {
             return false;
         }
-        value.getAndDecrement(i);
-        value.getAndIncrement(j);
+        value.set(i, value.get(i)-1);
+        value.set(j, value.get(j)+1);
         return true;
     }
 }
