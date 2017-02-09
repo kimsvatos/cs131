@@ -42,8 +42,8 @@ class BetterSorry implements State {
         byte[] curr = new byte[value.length];
         //value = new byte[aValue.length()];
         int i = 0; 
-        while (i < value.length{
-            value[i] = (byte) value.get(i);
+        while (i < value.length){
+            curr[i] = (byte) value.get(i);
             i++;
         }
         return curr;
