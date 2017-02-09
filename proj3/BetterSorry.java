@@ -10,7 +10,7 @@ class BetterSorry implements State {
 
     BetterSorry(byte[] v) { 
 
-        value = new AtomicInteger[v.lenth]; 
+        value = new AtomicInteger[v.length]; 
        
         int i = 0;
         while(i < value.length){
@@ -24,7 +24,7 @@ class BetterSorry implements State {
 
    BetterSorry(byte[] v, byte m) { 
 
-        value = new AtomicInteger[v.lenth]; 
+        value = new AtomicInteger[v.length]; 
        
         int i = 0;
         while(i < value.length){
@@ -36,17 +36,17 @@ class BetterSorry implements State {
     }
 
 
-    public int size() { return value.length(); }
+    public int size() { return value.length; }
 
     public byte[] current() { 
-        byte[] curr = new byte[value.length()];
+        byte[] curr = new byte[value.length];
         //value = new byte[aValue.length()];
         int i = 0; 
-        while (i < value.length()){
+        while (i < value.length{
             value[i] = (byte) value.get(i);
             i++;
         }
-        return value;
+        return curr;
      }
 
     //public int oldiVal;
