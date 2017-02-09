@@ -14,7 +14,7 @@ class BetterSorry implements State {
        
         int i = 0;
         while(i < value.length){
-            value[i] = value[i];
+            value[i] = new AtomicInteger(v[i]);
             i++;
         }
 
@@ -28,7 +28,7 @@ class BetterSorry implements State {
        
         int i = 0;
         while(i < value.length){
-            value[i] = value[i];
+            value[i] = new AtomicInteger(v[i]);
             i++;
         }
 
