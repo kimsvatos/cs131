@@ -8,7 +8,7 @@ to_morse([H], [[1, H]]).
 
 to_morse( [ H | T ], [[C,H] | Remaining ]) :- to_morse(T, [[SC, H] | Remaining]), succ(SC, C), !. 
 
-to_morse( [ H | T ], [[1,H] | [SC, X] | Remaining]) :- to_morse(T, [[SC, X] | Remaining]), H \= X, !. 
+to_morse( [ H | T ], [[1,H], [SC, X] | Remaining]) :- to_morse(T, [[SC, X] | Remaining]), H \= X, !. 
 
 
 % 0 cases
@@ -30,4 +30,4 @@ is_correct( [[2,1] | Remaining], ['-' | MorseEncoded]):- is_correct(Remaining, M
 is_correct( [[X,1], | Remaining], ['-' | MorseEncoded]):- X > 2, is_correct(Remaining, MorseEncoded).
 
 signal_morse([], []).
-signal_morse([H|T], Res):- to_morse([H|T], Encoded), is_correct(Enconded, Res).
+signal_morse([H|T], Res):- to_morse([H|T], Encoded), is_correct(Encoded, Res).
