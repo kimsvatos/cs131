@@ -27,7 +27,7 @@ is_correct( [[2,1] | Remaining], ['.' | MorseEncoded]):- is_correct(Remaining, M
 % 11 -> try '-'
 is_correct( [[2,1] | Remaining], ['-' | MorseEncoded]):- is_correct(Remaining, MorseEncoded).
 % 111 or more -> '-' 
-is_correct( [[X,1], | Remaining], ['-' | MorseEncoded]):- X > 2, is_correct(Remaining, MorseEncoded).
+is_correct( [[X,1] | Remaining], ['-' | MorseEncoded]):- X > 2, is_correct(Remaining, MorseEncoded).
 
 signal_morse([], []).
 signal_morse([H|T], Res):- to_morse([H|T], Encoded), is_correct(Encoded, Res).
