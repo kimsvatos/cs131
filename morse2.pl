@@ -122,7 +122,7 @@ build([Head | Tail], MorseWord, English):- append(MorseWord, [Head], X), build(T
 
 
 signal_message([],[]).
-signal_message([Head | Tail], English):- signal_morse([H | T], Morse), build(Morse, [], English).
+signal_message(Binary, English):- signal_morse(Binary, Morse), build(Morse, [], English).
 
 
 
