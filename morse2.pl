@@ -107,7 +107,7 @@ morse(sn, [.,.,.,-,.]).          % SN (understood, Sho' 'Nuff)
 % build(Morse, word_being_built, final_message) %
 %empty morse list cases
 build([],[],[]).
-build([], MorseWord, [English]) :- morse(English, MorseWord);
+build([], MorseWord, [English]) :- morse(English, MorseWord).
 
 % '#' first in morse list cases
 build(['#'| Tail], [], ['#' | Tail2 ]):- build(Tail, [], Tail2).
