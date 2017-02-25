@@ -117,12 +117,37 @@ build(['#'| Tail], MorseWord, ['#' | Tail2 ]):- build(Tail, [], Tail2).
 build(['^'| Tail], [], English):- build(Tail, [], English).
 build(['^'| Tail], MorseWord, [Head2 | Tail2 ]):- morse(Head2, MorseWord), build(Tail, [], Tail2).
 
+%other cases
 build([Head | Tail], MorseWord, English):- append(MorseWord, [Head], X), build(Tail, X, English).
 
+% english with errors and #,  collector , new approved english 
+remove_errors([],[],[]).
+remove_errors([], X, Y).
+remove_errors(['#'| OTail],[],['#' | NTail]):- remove_errors(Otail, [], NTail).
+remove_errors(['#'| OTail],[ CollHead | CollTail ],[ CollHead | MessTail]):- 
+		 remove_errors(['#' | OTail], CollTail, MessTail).
+remove_errors([error, Next | Tail], Collected, Message):-  =(error, Next),
+		 append(Collected, [error], X), remove_errors( [Next | Tail], X, Mess);
+		 remove_errors([Next | Tail], [], Mess).
+
+		 %%% loook here for an error with 'error'
+remove_errors([Head | Tail], Collected, Mess):- 
+	\=(Head, error),  append(Collected, [Head], X), remove_errors(Tail, X, Mess).
+
+
+
+
+%remove_errors([],[],[]).
+%remove_errors([], X, X).
+%remove_errors(['#'|Tail], [],['#' | Tail2]):- remove_errors(Tail, [], Tail2).
+%remove_errors(['#'|Tail], [],['#' | Tail2]):- remove_errors(Tail, [], Tail2).
+
+% check for errors
+errorcheck(Old, New):- remove_err(Old, [], New).
 
 
 signal_message([],[]).
-signal_message(Binary, English):- signal_morse(Binary, Morse), build(Morse, [], English).
+signal_message(Binary, English):- signal_morse(Binary, Morse), build(Morse, [], Draft), errorcheck(Draft, English).
 
 
 
