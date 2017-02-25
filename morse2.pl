@@ -3,8 +3,8 @@
 
 is_valid([], []).
 % 111 -> dah - 
-% more than three 1's...chop off to be 3 ones, rerun
-is_valid( [ 1, 1, 1, 1] | Tail], Morse):- is_valid([[1,1,1] | Tail], Morse).
+% more than three '1'...cut off to be 3 ones, rerun
+is_valid( [[ 1, 1, 1, 1] | Tail], Morse):- is_valid([[1,1,1] | Tail], Morse).
 
 % 3 '1's only 
 is_valid([[1,1,1] | Tail], ['-' | Morse]):- is_valid(Tail, Morse).
@@ -16,7 +16,7 @@ is_valid([[1,1] | Tail], ['-' | Morse]):- is_valid(Tail, Morse).
 % 1 '1's only --> '.'
 is_valid([ 1 | Tail], ['.' | Morse]):- is_valid(Tail, Morse).
 
-% 7+ '0's --> chop off to have 6 '0's, rerun
+% 7+ '0's --> cut off to have 6 '0's, rerun
 is_valid( [ 0,0,0,0,0,0,0] | Tail], Morse):- is_valid([[0,0,0,0,0,0] | Tail], Morse).
 
 %6 '0's --> automatically a #
