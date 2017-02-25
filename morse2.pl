@@ -143,7 +143,7 @@ remove_errors([Head | Tail], Collected, Mess):-
 %remove_errors(['#'|Tail], [],['#' | Tail2]):- remove_errors(Tail, [], Tail2).
 
 % check for errors
-errorcheck(Old, New):- remove_errors(Old, [], New).
+errorcheck(Old, New):- once(remove_errors(Old, [], New)).
 
 
 signal_message([],[]).
