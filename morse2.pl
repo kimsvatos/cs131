@@ -132,7 +132,7 @@ remove_errors([error, Next | Tail], Collected, Message):-  =(error, Next),
 
 		 %%% loook here for an error with 'error'
 remove_errors([Head | Tail], Collected, Mess):- 
-	\=(Head, error),  append(Collected, [Head], X), remove_errors(Tail, X, Mess).
+	\=([Head], ['error']),  append(Collected, [Head], X), remove_errors(Tail, X, Mess).
 
 
 
