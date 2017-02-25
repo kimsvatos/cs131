@@ -42,7 +42,7 @@ is_valid( [ 0 | Tail],  Morse):- is_valid( Tail, Morse).
 signal_morse([],[]).
 signal_morse( binary, M) :- is_valid([A,B,C,D,E,F,G | Tail], M).
 signal_morse( binary, M) :- is_valid([A,B,C,D,E,F | Tail], M).
-signal_morse( binary, M) :- is_valid([A,B,C,D,E, | Tail], M).
+signal_morse( binary, M) :- is_valid([A,B,C,D,E | Tail], M).
 signal_morse( binary, M) :- is_valid([A,B,C,D | Tail], M).
 signal_morse( binary, M) :- is_valid([A,B,C | Tail], M).
 signal_morse( binary, M) :- is_valid([A,B | Tail], M).
