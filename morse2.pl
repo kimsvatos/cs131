@@ -125,24 +125,29 @@ isempty([]).
 collHoldsErrors([H|T]):- =([H], ['error']).
 
 
-% english with errors and #,  collector , new approved english 
+% base cases, no more morse to go through and error check.
 remove_errors([],[],[]).
 remove_errors([], X, X).
+
+% when we encounter a '#', start adding to the english from accumulator 
 remove_errors(['#'| OTail],[],['#' | NTail]):- remove_errors(OTail, [], NTail).
 remove_errors(['#'| OTail],[ CollHead | CollTail ],[ CollHead | MessTail]):- 
 		 remove_errors(['#' | OTail], CollTail, MessTail).
 
-
+% if we encounter an error, add if:
+% 1) accumulator is empty or 
+% 2) accumulator is only full of errors (true if first element is error)
+% otherwise, clear the accumulator and keep error checking. 
 remove_errors([error | Tail], [], Message):- remove_errors(Tail, [error], Message).
 remove_errors([error | Tail], Collected, Message):- collHoldsErrors(Collected), 
 		append(Collected, [error], X), remove_errors(Tail, X, Message);
 		remove_errors(Tail, [], Message). 
 
-
+%otherwise, just build the accumulator 
 remove_errors([Head | Tail], Collected, Message):- 
 	\=([Head], ['error']),  append(Collected, [Head], X), remove_errors(Tail, X, Message).
 
-% check for errors
+% wrapper to check for errors 
 errorcheck(Old, New):- remove_errors(Old, [], New).
 
 
