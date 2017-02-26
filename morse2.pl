@@ -111,7 +111,7 @@ build([], MorseWord, [English]) :- morse(English, MorseWord).
 
 % '#' first in morse list cases
 build(['#'| Tail], [], ['#' | Tail2 ]):- build(Tail, [], Tail2).
-build(['#'| Tail], MorseWord, ['#' | Tail2 ]):- build(Tail, [], Tail2).
+build(['#'| Tail], MorseWord, [First, '#' | Tail2 ]):- morse(First, MorseWord), build(Tail, [], Tail2).
 
 % '^' first in morse list
 build(['^'| Tail], [], English):- build(Tail, [], English).
@@ -119,6 +119,11 @@ build(['^'| Tail], MorseWord, [Head2 | Tail2 ]):- morse(Head2, MorseWord), build
 
 %other cases
 build([Head | Tail], MorseWord, English):- append(MorseWord, [Head], X), build(Tail, X, English).
+
+
+
+
+
 
 % english with errors and #,  collector , new approved english 
 remove_errors([],[],[]).
