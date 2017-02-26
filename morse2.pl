@@ -128,7 +128,9 @@ build([Head | Tail], MorseWord, English):- append(MorseWord, [Head], X), build(T
 % english with errors and #,  collector , new approved english 
 remove_errors([],[],[]).
 remove_errors([], X, X).
-remove_errors(['#'| OTail],[],['#' | NTail]):- remove_errors(Otail, [], NTail).
+remove_errors(['#'| OTail],[],['#' | NTail]):- remove_errors(OTail, [], NTail).
+
+
 remove_errors(['#'| OTail],[ CollHead | CollTail ],[ CollHead | MessTail]):- 
 		 remove_errors(['#' | OTail], CollTail, MessTail).
 remove_errors([error, Next | Tail], Collected, Message):-  =(error, Next),
