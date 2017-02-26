@@ -122,24 +122,28 @@ build([Head | Tail], MorseWord, English):- append(MorseWord, [Head], X), build(T
 
 
 isempty([]).
-
+collHoldsErrors([H|T]):- =([H], ['error']).
 
 
 % english with errors and #,  collector , new approved english 
 remove_errors([],[],[]).
 remove_errors([], X, X).
 remove_errors(['#'| OTail],[],['#' | NTail]):- remove_errors(OTail, [], NTail).
-
-
 remove_errors(['#'| OTail],[ CollHead | CollTail ],[ CollHead | MessTail]):- 
 		 remove_errors(['#' | OTail], CollTail, MessTail).
 
 
-remove_errors([error | T], [], Message):- remove_errors(['#' | T], [error], Message).
 
 
-remove_errors([error | Tail], Collected, Message):- remove_errors(Tail, [], Message). 
-remove_errors([error, Next | Tail], Collected, Message):-  remove_errors([Next | Tail], [], Message).
+
+
+
+remove_errors([error | Tail], [], Message):- remove_errors(Tail, [error], Message).
+remove_errors([error | Tail], Collected, Message):- collHoldsErrors(Collected), 
+		append(Collected, [error], X), remove_errors(Tail, X, Message);
+		remove_errors(Tail, [], Message). 
+
+%remove_errors([error, Next | Tail], Collected, Message):-  remove_errors([Next | Tail], [], Message).
 
 
 
