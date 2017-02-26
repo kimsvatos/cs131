@@ -121,7 +121,7 @@ build(['^'| Tail], MorseWord, [Head2 | Tail2 ]):- morse(Head2, MorseWord), build
 build([Head | Tail], MorseWord, English):- append(MorseWord, [Head], X), build(Tail, X, English).
 
 
-
+isempty([]).
 
 
 
@@ -133,9 +133,16 @@ remove_errors(['#'| OTail],[],['#' | NTail]):- remove_errors(OTail, [], NTail).
 
 remove_errors(['#'| OTail],[ CollHead | CollTail ],[ CollHead | MessTail]):- 
 		 remove_errors(['#' | OTail], CollTail, MessTail).
-remove_errors([error, Next | Tail], Collected, Message):-  =(error, Next),
-		 append(Collected, [error], X), remove_errors( [Next | Tail], X, Message);
+
+remove_errors_accum([ error | Tail ], [], [ error | Tail2]):- remove_errors_accum(Tail, [], Tail2). 
+
+
+remove_errors([error, Next | Tail], Collected, Message):-  
 		 remove_errors([Next | Tail], [], Message).
+
+
+
+
 
 remove_errors([Head | Tail], Collected, Message):- 
 	\=([Head], ['error']),  append(Collected, [Head], X), remove_errors(Tail, X, Message).
