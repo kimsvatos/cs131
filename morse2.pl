@@ -134,11 +134,12 @@ remove_errors(['#'| OTail],[],['#' | NTail]):- remove_errors(OTail, [], NTail).
 remove_errors(['#'| OTail],[ CollHead | CollTail ],[ CollHead | MessTail]):- 
 		 remove_errors(['#' | OTail], CollTail, MessTail).
 
-remove_errors_accum([ error | Tail ], [], [ error | Tail2]):- remove_errors_accum(Tail, [], Tail2). 
+
+remove_errors([error | T], [], Message):- remove_errors_accum(['#' | T], [error], Message).
 
 
-remove_errors([error, Next | Tail], Collected, Message):-  
-		 remove_errors([Next | Tail], [], Message).
+remove_errors([error | Tail], Collected, Message):- remove_errors_accum(Tail, [], Message). 
+remove_errors([error, Next | Tail], Collected, Message):-  remove_errors([Next | Tail], [], Message).
 
 
 
