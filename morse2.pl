@@ -141,7 +141,7 @@ remove_errors([Head | Tail], Collected, Message):-
 	\=([Head], ['error']),  append(Collected, [Head], X), remove_errors(Tail, X, Message).
 
 % check for errors
-errorcheck(Old, New):- remove_errors(Old, [], New).
+errorcheck(Old, New):- once(remove_errors(Old, [], New)).
 
 
 signal_message([],[]).
