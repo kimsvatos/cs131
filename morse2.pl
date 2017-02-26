@@ -127,11 +127,11 @@ remove_errors(['#'| OTail],[],['#' | NTail]):- remove_errors(Otail, [], NTail).
 remove_errors(['#'| OTail],[ CollHead | CollTail ],[ CollHead | MessTail]):- 
 		 remove_errors(['#' | OTail], CollTail, MessTail).
 remove_errors([error, Next | Tail], Collected, Message):-  =(error, Next),
-		 append(Collected, [error], X), remove_errors( [Next | Tail], X, Mess);
-		 remove_errors([Next | Tail], [], Mess).
+		 append(Collected, [error], X), remove_errors( [Next | Tail], X, Message);
+		 remove_errors([Next | Tail], [], Message).
 
-remove_errors([Head | Tail], Collected, Mess):- 
-	\=([Head], ['error']),  append(Collected, [Head], X), remove_errors(Tail, X, Mess).
+remove_errors([Head | Tail], Collected, Message):- 
+	\=([Head], ['error']),  append(Collected, [Head], X), remove_errors(Tail, X, Message).
 
 % check for errors
 errorcheck(Old, New):- remove_errors(Old, [], New).
