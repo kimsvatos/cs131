@@ -143,14 +143,9 @@ remove_errors([error | Tail], Collected, Message):- collHoldsErrors(Collected),
 		append(Collected, [error], X), remove_errors(Tail, X, Message);
 		remove_errors(Tail, [], Message). 
 
-%remove_errors([error, Next | Tail], Collected, Message):-  remove_errors([Next | Tail], [], Message).
 
-
-
-
-
-remove_errors([Head | Tail], Collected, Message):- 
-	\=([Head], ['error']),  append(Collected, [Head], X), remove_errors(Tail, X, Message).
+%remove_errors([Head | Tail], Collected, Message):- 
+%	\=([Head], ['error']),  append(Collected, [Head], X), remove_errors(Tail, X, Message).
 
 % check for errors
 errorcheck(Old, New):- remove_errors(Old, [], New).
