@@ -35,14 +35,14 @@
 )
 
 
-; Return the first element of listdiff. It is an error if 
-; listdiff has no elements.
-; If it is a valid listdiff and not empty, then just return listdiff's
-; first element's first element (that is the very first element of the listdiff)
-; else throw an error.
+;(car-ld listdiff)
+;Return the first element of listdiff. It is an error if listdiff has 
+;no elements. ("It is an error" means the implementation 
+;	can do anything it likes when this happens, and we won't test this case when grading.)
 (define (car-ld listdiff)
-	(if (and (listdiff? listdiff) (not (null-ld? listdiff)))
-		(car (car listdiff)) (error "ERROR! -2")
+	(if (not (listdiff? listdiff)) (error "car-ld error") 
+		;else starts below
+		(if (null-ld? listdiff) (error "car-ld error") (car (car listdiff)))
 	)
 )
 
