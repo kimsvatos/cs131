@@ -118,38 +118,39 @@
 )
 )
 
-; Return a listdiff that represents the same elements as list.
-; Reuse the listdiff function, unpacking the list as a set of 
-; arguments.
+; ;(list->listdiff list)
+; ;Return a listdiff that represents the same elements as list.
 (define (list->listdiff list)
-  	(if (list? list)
+	(if (not (list? list)) 
+		(error "list->listdiff error")
+		;else
 		(apply listdiff (car list) (cdr list))
-		(error "ERROR! -5")
-	)
+)
 )
 
-; Return a list that represents the same elements as listdiff.
-; Simply take the difference of the listdiff, which implicitly
-; returns a list.
+
+; ;(listdiff->list listdiff)
+; ;Return a list that represents the same elements as listdiff.
 (define (listdiff->list listdiff)
-  	(if (listdiff? listdiff)
+	(if (not (listdiff? listdiff)) 
+		(error "listdiff->list error")
 		(take (car listdiff) (length-ld listdiff))
-		(error "ERROR! -6")
-	)
+)
 )
 
-; Return a Scheme expression that, when evaluated, will return a copy of listdiff, 
-; that is, a listdiff that has the same top-level data structure as listdiff. 
-; Your implementation can assume that the argument listdiff contains only 
-; booleans, characters, numbers, and symbols.
-; Use a quasiquote to produce the difference of lists and cons that with 
-; an empty list to create a valid listdiff thus giving us a shallow copy of 
-; the original listdiff.
+; ;(expr-returning listdiff)
+; ;Return a Scheme expression that, when evaluated, will return a 
+; ;copy of listdiff, that is, a listdiff that has the same top-level 
+; ;data structure as listdiff. Your implementation can assume that the 
+; ;argument listdiff contains only booleans, characters, numbers, and symbols.
 (define (expr-returning listdiff)
-  	(if (listdiff? listdiff)
+	(if (not (listdiff? listdiff))
+		(error "expr-returning listdiff error")
+		;else
 		`(cons ',(take (car listdiff) (length-ld listdiff)) '())
-		(error "ERROR! -7")
-	)
+
+
+		)
 )
 
 (define ils (append '(a e i o u) 'y))
