@@ -92,15 +92,15 @@
 ;by the elements of the other listdiffs. The resulting listdiff is 
 ;always newly allocated, except that it shares structure with the last argument. 
 ;(Unlike append, the last argument cannot be an arbitrary object; it must be a listdiff.)
-(define (append-ld listdiff . argList)
-	(if (null? argList) listdiff
-		;else
-		(apply append-ld 
-		(cons (append (take (car listdiff) (length-ld listdiff)) (car (car argList)))
-			(cdr (car args))) (cdr argList)
-		)
-		)
-)
+; (define (append-ld listdiff . argList)
+; 	(if (null? argList) listdiff
+; 		;else
+; 		(apply append-ld 
+; 		(cons (append (take (car listdiff) (length-ld listdiff)) (car (car argList)))
+; 			(cdr (car args))) (cdr argList)
+; 		)
+; 		)
+; )
 
 
 ; ;(assq-ld obj alistdiff)
