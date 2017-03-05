@@ -28,7 +28,7 @@
 ; valid listdiff, otherwise just throw an error.
 (define (cons-ld obj listdiff)
 	(if (listdiff? listdiff)
-	  (cons (cons obj (car listdiff)) (cdr listdiff)) (error "ERROR!")
+	  (cons (cons obj (car listdiff)) (cdr listdiff)) (error "ERROR! -1")
 	)
 )
 
@@ -39,7 +39,7 @@
 ; else throw an error.
 (define (car-ld listdiff)
 	(if (and (listdiff? listdiff) (not (null-ld? listdiff)))
-		(car (car listdiff)) (error "ERROR!")
+		(car (car listdiff)) (error "ERROR! -2")
 	)
 )
 
@@ -50,7 +50,7 @@
 ; first element) and the cdr of the listdiff, else throw an error.
 (define (cdr-ld listdiff)
 	(if (and (listdiff? listdiff) (not (null-ld? listdiff)))
-		(cons (cdr (car listdiff)) (cdr listdiff)) (error "ERROR!")	
+		(cons (cdr (car listdiff)) (cdr listdiff)) (error "ERROR! -3")	
 	)
 )
 
@@ -72,7 +72,7 @@
 				accum
 				(length-ld-tail (cdr-ld listdiff) (+ accum 1))
 			)
-			(error "ERROR!")
+			(error "ERROR! -4")
 		)
 	)
 	(length-ld-tail listdiff 0)
@@ -119,7 +119,7 @@
 (define (list->listdiff list)
   	(if (list? list)
 		(apply listdiff (car list) (cdr list))
-		(error "ERROR!")
+		(error "ERROR! -5")
 	)
 )
 
@@ -129,7 +129,7 @@
 (define (listdiff->list listdiff)
   	(if (listdiff? listdiff)
 		(take (car listdiff) (length-ld listdiff))
-		(error "ERROR!")
+		(error "ERROR! -6")
 	)
 )
 
@@ -143,7 +143,7 @@
 (define (expr-returning listdiff)
   	(if (listdiff? listdiff)
 		`(cons ',(take (car listdiff) (length-ld listdiff)) '())
-		(error "ERROR!")
+		(error "ERROR! -7")
 	)
 )
 
