@@ -86,9 +86,9 @@
 (define d3 (cons ils (append '(a e i o u) 'y)))
 (define d4 (cons '() ils))
 (define d5 0)
-(define d6 (listdiff ils d1 37))
-(define d7 (append-ld d1 d2 d6))
-(define e1 (expr-returning d1))
+;(define d6 (listdiff ils d1 37))
+;(define d7 (append-ld d1 d2 d6))
+;(define e1 (expr-returning d1))
 
 
 
