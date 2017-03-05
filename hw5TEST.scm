@@ -12,11 +12,16 @@
 ; of the obj then we know that it is not a valid listdiff.
 (define (listdiff? obj) 
 	(if (null-ld? obj) #t 
-	  (if (or (null? obj) (not (pair? obj)) (not (pair? (car obj)))) #f
-	  (listdiff? (cons (cdr (car obj)) (cdr obj))))
+		;else
+		(
+			if (or (not (pair? obj)) (null? obj) (not (pair? (car obj)))) #f
+			;inner else
+			(
+				(listdiff? (cons (cdr (car obj)) (cdr obj)))
+				)
+			)
 	)
 )
-
 ; Return a listdiff whose first element is obj 
 ; and whose remaining elements are listdiff.
 ; If we are given a valid listdiff, then just cons
