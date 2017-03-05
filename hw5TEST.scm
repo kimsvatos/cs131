@@ -171,8 +171,8 @@
 (null-ld? d6)                         
 
 (car-ld d1)                           
-(car-ld d2)                           
-(car-ld d3)                           
+;(car-ld d2)                           
+;(car-ld d3)                           
 (car-ld d6)                           
 
 (length-ld d1)                        
