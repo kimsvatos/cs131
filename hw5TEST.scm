@@ -16,9 +16,9 @@
 		(
 			if (or (not (pair? obj)) (null? obj) (not (pair? (car obj)))) #f
 			;inner else
-			(
+			
 				(listdiff? (cons (cdr (car obj)) (cdr obj)))
-				)
+				
 			)
 	)
 )
