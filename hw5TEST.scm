@@ -2,11 +2,8 @@
 ; Make sure that object is valid by testing if it is a pair
 ; and then just make sure the two elements of the pair listdiff
 ; are the same, which thus means the listdiff is null.
-(define (null-ld? obj) 
-	(if (or (null? obj) (not (pair? obj))) #f 
-		(eq? (car obj) (cdr obj))
-  	)
-)
+(define (null-ld? obj)
+	(and (not (null? obj)) (pair? obj) (eq? (car obj) (cdr obj))))
 
 ; Return if obj is a listdiff or not
 ; Go through all the elements through the listdiff unti
@@ -177,6 +174,6 @@
 
 (length-ld d1)                        
 (length-ld d2)                        
-(length-ld d3)                        
+;(length-ld d3)                        
 (length-ld d6)                        
 (length-ld d7) 
