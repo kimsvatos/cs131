@@ -87,22 +87,21 @@
 
 
 
-; Return a listdiff consisting of the elements of 
-; the first listdiff followed by the elements of the other listdiffs. 
-; The resulting listdiff is always newly allocated, except that it shares 
-; structure with the last argument. (Unlike append, the last argument 
-; cannot be an arbitrary object; it must be a listdiff.)
-; Recursively get the actual difference and append to each beginning of the 
-; next listdiff and then recursively call it with the cdr of the args, and
-; unpack the arguments so that they are packed in the recursive call, ending
-; when we have no more listdiffs in args.
-(define (append-ld listdiff . args)
-	(if (null? args) listdiff
-	  (apply append-ld (cons (append (take (car listdiff) (length-ld listdiff)) 
-	  								  (car (car args))) (cdr (car args))) 
-	  					(cdr args))
-	)
+; (append-ld listdiff …)
+;Return a listdiff consisting of the elements of the first listdiff followed 
+;by the elements of the other listdiffs. The resulting listdiff is 
+;always newly allocated, except that it shares structure with the last argument. 
+;(Unlike append, the last argument cannot be an arbitrary object; it must be a listdiff.)
+(define (append-ld listdiff . argList)
+	(if (null? argList) listdiff
+		;else
+		(apply append-ld 
+		(cons (append (take (car listdiff) (length-ld listdiff)) (car (car argList)))
+			(cdr (car args))) (cdr argList)
+		)
+		)
 )
+
 ; alistdiff must be a listdiff whose members are all pairs. 
 ; Find the first pair in alistdiff whose car field is eq? to obj, 
 ; and return that pair; if there is no such pair, return #f.
