@@ -102,23 +102,20 @@
 		)
 )
 
-; alistdiff must be a listdiff whose members are all pairs. 
-; Find the first pair in alistdiff whose car field is eq? to obj, 
-; and return that pair; if there is no such pair, return #f.
-; If we have an empty listdiff then we just return false, otherwise
-; just compare the first element (car of car of car of listdiff) with obj
-; making sure its a pair, and if they are equal return the pair else 
-; recursively call it with the rest of the listdiff.
-(define (assq-ld obj alistdiff)
-	(if (null-ld? alistdiff) #f
-	  (if (and (pair? (car alistdiff)) (eq? (car (car (car alistdiff))) obj))
-	  	(car (car alistdiff))
-	  	(if (pair? (car alistdiff))
-	  		(assq-ld obj (cons (cdr (car alistdiff)) (cdr alistdiff)))
-	  		#f
-	  	)
-	  )
-	)
+; ;(assq-ld obj alistdiff)
+; ;alistdiff must be a listdiff whose members are all pairs. Find the first pair 
+; ;in alistdiff whose car field is eq? to obj, and return that pair; if there is no 
+; ;such pair, return #f.
+( define (assq-ld obj alistdiff)
+	(if (null-ld? alistdiff) 
+		(if (and (pair? (car alistdiff)) (eq? obj (car (car (car alistdiff))))) 
+			(car (car alistdiff))
+			;else
+			#f	
+
+	) ;else
+		#f
+)
 )
 
 ; Return a listdiff that represents the same elements as list.
