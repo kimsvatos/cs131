@@ -52,12 +52,13 @@
 ;Return a listdiff containing all but the first element of 
 ;listdiff. It is an error if listdiff has no elements.
 (define (cdr-ld listdiff)
-	if(or (not (listdiff? listdiff)) (null-ld? listdiff))
+	(if (or (not (listdiff? listdiff)) (null-ld? listdiff)))
 		(error "cdr-ld error")
+		;else
 		(cons (cdr(car listdiff)) (cdr listdiff))
 
-)
 
+)
 ;(listdiff obj …)
 ; Return a newly allocated listdiff of its arguments.
 (define (listdiff obj . argList)
