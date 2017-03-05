@@ -97,7 +97,7 @@
 		;else
 		(apply append-ld 
 		(cons (append (take (car listdiff) (length-ld listdiff)) (car (car argList)))
-			(cdr (car args))) (cdr argList)
+			(cdr (car argList))) (cdr argList)
 		)
 		)
 )
