@@ -70,19 +70,19 @@
 ; length-ld listdiff)
 ; Return the length of listdiff.
 (define (length-ld listdiff)
-	(define (counter ld num)
-		(if (not (listdiff? ld))
-			(error "length-ld error")
-;else
-			(if (not (null-ld? ld))
-				(counter (cdr-ld ld) (+ 1 num))
+	(define (count-ld listdiff num)
+		(if (listdiff? listdiff)
+
+			(if (not (null-ld? listdiff))
+				(count-ld (cdr-ld listdiff) (+ 1 num))
 				;else
 				num
 			)
+			(error "length-ld error")
 
 		)
 	)
-	(counter listdiff 0)
+	(count-ld listdiff 0)
 
 )
 
