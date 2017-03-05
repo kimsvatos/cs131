@@ -186,3 +186,23 @@
 ;(length-ld d3)                        
 (length-ld d6)                        
 (length-ld d7) 
+
+(define kv1 (cons d1 'a))
+(define kv2 (cons d2 'b))
+(define kv3 (cons d3 'c))
+(define kv4 (cons d1 'd))
+(define d8 (listdiff kv1 kv2 kv3 kv4))
+(eq? (assq-ld d1 d8) kv1)              
+(eq? (assq-ld d2 d8) kv2)             ; ===>  #t
+(eq? (assq-ld d1 d8) kv4)              ;===>  #f
+
+(eq? (car-ld d6) ils)                 ; ===>  #t
+(eq? (car-ld (cdr-ld d6)) d1)         ; ===>  #t
+(eqv? (car-ld (cdr-ld (cdr-ld d6))) 37);===>  #t
+(equal? (listdiff->list d6)
+        (list ils d1 37))              ;===>  #t
+(eq? (list-tail (car d6) 3) (cdr d6))  ;===>  #t
+
+(listdiff->list (eval e1))        ;     ===>  (a e)
+(equal? (listdiff->list (eval e1))
+        (listdiff->list d1))
