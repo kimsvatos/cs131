@@ -25,17 +25,15 @@
 	)
 )
 
-; Return a listdiff whose first element is obj 
-; and whose remaining elements are listdiff.
-; If we are given a valid listdiff, then just cons
-; the obj to the start of the listdiff first element, and 
-; then cons that with the rest of the listdiff to return a
-; valid listdiff, otherwise just throw an error.
+;(cons-ld obj listdiff)
+;Return a listdiff whose first element is obj
+; and whose remaining elements are listdiff. (Unlike cons,
+; the last argument cannot be an arbitrary object; it must be a listdiff.)
 (define (cons-ld obj listdiff)
-	(if (listdiff? listdiff)
-	  (cons (cons obj (car listdiff)) (cdr listdiff)) (error "ERROR! -1")
-	)
+	(if (listdiff? listdiff) 
+		(cons (cons obj (car listdiff)) (cdr listdiff)) (error "cons-ld error"))
 )
+
 
 ; Return the first element of listdiff. It is an error if 
 ; listdiff has no elements.
