@@ -46,40 +46,46 @@
 	)
 )
 
-; Return a listdiff containing all but the first element of listdiff.
-; It is an error if listdiff has no elements.
-; If its a valid listdiff and is not empty, then we just remove the 
-; first element by using cons on the cdr of the car (everything but the
-; first element) and the cdr of the listdiff, else throw an error.
+;cdr-ld listdiff)
+;Return a listdiff containing all but the first element of 
+;listdiff. It is an error if listdiff has no elements.
 (define (cdr-ld listdiff)
-	(if (and (listdiff? listdiff) (not (null-ld? listdiff)))
-		(cons (cdr (car listdiff)) (cdr listdiff)) (error "ERROR! -3")	
-	)
+	(if (or (not (listdiff? listdiff)) (null-ld? listdiff))
+		(error "cdr-ld error")
+		;else
+		(cons (cdr(car listdiff)) (cdr listdiff))
+
+
+)
 )
 
+
+;(listdiff obj …)
 ; Return a newly allocated listdiff of its arguments.
-; Just combine the object and arguments, thus giving us a 
-; pair that is a listdiff.
-(define (listdiff obj . args)
-	(cons (cons obj args) '())
-)
+(define (listdiff obj . argList)
+	(cons (cons obj argList) `()))
 
-; Return the length of listdiff
-; If we are given a valid listdiff, then if it is null, its length is 0
-; otherwise we just add 1 and then check for the rest of the listdiff, else
-; return an error. Use a helper function for tail-recursion optimization.
+
+; length-ld listdiff)
+; Return the length of listdiff.
 (define (length-ld listdiff)
-  	(define (length-ld-tail listdiff accum)
+	(define (count-ld listdiff num)
 		(if (listdiff? listdiff)
-			(if (null-ld? listdiff)
-				accum
-				(length-ld-tail (cdr-ld listdiff) (+ accum 1))
+
+			(if (not (null-ld? listdiff))
+				(count-ld (cdr-ld listdiff) (+ 1 num))
+				;else
+				num
 			)
-			(error "ERROR! -4")
+			(error "length-ld error")
+
 		)
 	)
-	(length-ld-tail listdiff 0)
+	(count-ld listdiff 0)
+
 )
+
+
 
 ; Return a listdiff consisting of the elements of 
 ; the first listdiff followed by the elements of the other listdiffs. 
