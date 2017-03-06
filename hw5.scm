@@ -145,24 +145,21 @@
 ; ;data structure as listdiff. Your implementation can assume that the 
 ; ;argument listdiff contains only booleans, characters, numbers, and symbols.
 (define (expr-returning listdiff)
-	(if (not (listdiff? listdiff))
-		(error "expr-returning listdiff error")
-		;else
-		( append '(cons)
-			(append 
-				(list (exprHelp listdiff))
-				(list (cons ('quote) (list '())))
-			)
+	(append 
+		'(cons) 
+		(append 
+			(list (helpf listdiff)) 
+			(list (cons 'quote (list '())))
 		)
-
-
 	)
+)
+
+(define (helpf listdiff)
+	(cons 'quote (listdiff->list listdiff))
 )
 
 
 
-(define (exprHelp listdiff)
-	(cons 'quote (listdiff->list listdiff)))
 
  (define ils (append '(a e i o u) 'y))
  (define d1 (cons ils (cdr (cdr ils))))
