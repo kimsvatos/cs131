@@ -1,0 +1,68 @@
+Report
+
+My first approach at solving this problem quickly grew out of hand:
+I found myself nesting more and more recursive functions to 
+examine the right hand sides to nonterminals-- and if 
+the program encountered yet another non-terminal, I could call yet
+another nested function...I realized this approach was non feasable.
+
+Rather than indefinitely nesting, I noticed there were really 
+only two cases: we either are examining the right hand side as a whole,
+or examining a single piece of that right hand side. If that single 
+piece of the right hand side is a non terminal, it becomes the 
+case where we "expand" that nonterminal to examine *it's* right 
+hand side. Thus I saw the need for only two functions, which would 
+call each other. 
+
+However, I encountered another problem: once we finally encounter a 
+nonterminal, and match it, and return a few function calls earlier, 
+we have no way of keeping track how much of "frag" has already been 
+matched. Using a simple h::t cannot work, beacuse for example, in the 
+case of Expr -> foo; bar; 
+		foo -> ["bark"; "woof"]; ["bark"]
+		bar -> ["meow"]
+
+when the call to "expand" the nonterminal foo returns, the current
+function has no way of knowing if frag matched with "bark woof" or
+just "bark" --- and thus there is no way to know how to continue matching.
+Thus, there must be some way to move on matching from within the 
+function rather from when it returns-- this is done by taking advantage
+of the "acceptor" variable. On the top level, once the ruleList is empty
+(an acceptable match was found) the acceptor is called with the remaining 
+fragment. Because I nest my calls to my functions, on every level except
+the topmost level, I do not give the acceptor function as the "acceptor" 
+argument, but rather place a call to match the next rule term and the
+next part of frag. 
+In this way, when the rule is matched and the "acceptor" is called, it 
+is really calling a new call to the match function to match the remaining
+part of the frag. 
+Because only the top most layer has the actual acceptor as the acceptor
+argument, the acceptor only gets called once an acceptable match in its
+entirety is found (once every function returns, not None)
+
+However, this implementation is not fool proof-- for example, it would fail
+with grammars that have an infinite loop via blind alley rules, for example,
+it would go into an infinite loop trying to match the following grammar: 
+
+Expr -> [foo; bar]
+	foo -> [expr; bar]
+	bar -> ["hi"]
+
+My functions would go into an infinite loop calling each other, with no 
+way to stop or break as frag is not being used up and you always encounter
+a nonterminal and try to expand it before trying to match it. 
+
+Examples of a grammar and test case that sends my code into an infinite loop:
+
+let repet_bruin_grammar =
+(UCLA, function
+	| UCLA -> [[ N UCLA; T "College"];
+				[T "College"]]
+	)
+
+ let test_2 =
+ ((parse_prefix bruin_grammar accept_fun ["College";"College"; "College"]) = 
+ 	Some([ (UCLA, [T "College"; N UCLA]); 
+ 		(UCLA, [T "College"])], ["College"] ))
+
+
