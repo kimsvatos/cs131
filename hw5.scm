@@ -151,7 +151,7 @@
 		( append '(cons)
 			(append 
 				(list (exprHelp listdiff))
-				(list (cons 'quote (list '())))
+				(list (cons ('quote) (list '())))
 			)
 		)
 
