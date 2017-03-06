@@ -145,70 +145,60 @@
 ; ;data structure as listdiff. Your implementation can assume that the 
 ; ;argument listdiff contains only booleans, characters, numbers, and symbols.
 (define (expr-returning listdiff)
-	(append 
-		'(cons) 
-		(append 
-			(list (helpf listdiff)) 
-			(list (cons 'quote (list '())))
-		)
-	)
-)
-
-(define (helpf listdiff)
-	(cons 'quote (listdiff->list listdiff))
-)
+	(quasiquote (cons '(unquote (listdiff->list listdiff)) '())))
 
 
-; (define ils (append '(a e i o u) 'y))
-; (define d1 (cons ils (cdr (cdr ils))))
-; (define d2 (cons ils ils))
-; (define d3 (cons ils (append '(a e i o u) 'y)))
-; (define d4 (cons '() ils))
-; (define d5 0)
-; (define d6 (listdiff ils d1 37))
-; (define d7 (append-ld d1 d2 d6))
-; (define e1 (expr-returning d1))
 
-; (listdiff? d1)                        
-; (listdiff? d2)                        
-; (listdiff? d3)                        
-; (listdiff? d4)                        
-; (listdiff? d5)                        
-; (listdiff? d6)                        
-; (listdiff? d7)                        
+(define ils (append '(a e i o u) 'y))
+(define d1 (cons ils (cdr (cdr ils))))
+(define d2 (cons ils ils))
+(define d3 (cons ils (append '(a e i o u) 'y)))
+(define d4 (cons '() ils))
+(define d5 0)
+(define d6 (listdiff ils d1 37))
+(define d7 (append-ld d1 d2 d6))
+(define e1 (expr-returning d1))
 
-; (null-ld? d1)                         
-; (null-ld? d2)                         
-; (null-ld? d3)                         
-; (null-ld? d6)                         
+(listdiff? d1)                        
+(listdiff? d2)                        
+(listdiff? d3)                        
+(listdiff? d4)                        
+(listdiff? d5)                        
+(listdiff? d6)                        
+(listdiff? d7)                        
 
-; (car-ld d1)                           
-; ;(car-ld d2)                           
-; ;(car-ld d3)                           
-; (car-ld d6)                           
+(null-ld? d1)                         
+(null-ld? d2)                         
+(null-ld? d3)                         
+(null-ld? d6)                         
 
-; (length-ld d1)                        
-; (length-ld d2)                        
-; ;(length-ld d3)                        
-; (length-ld d6)                        
-; (length-ld d7) 
+(car-ld d1)                           
+;(car-ld d2)                           
+;(car-ld d3)                           
+(car-ld d6)                           
 
-; (define kv1 (cons d1 'a))
-; (define kv2 (cons d2 'b))
-; (define kv3 (cons d3 'c))
-; (define kv4 (cons d1 'd))
-; (define d8 (listdiff kv1 kv2 kv3 kv4))
-; (eq? (assq-ld d1 d8) kv1)              
-; (eq? (assq-ld d2 d8) kv2)             ; ===>  #t
-; (eq? (assq-ld d1 d8) kv4)              ;===>  #f
+(length-ld d1)                        
+(length-ld d2)                        
+;(length-ld d3)                        
+(length-ld d6)                        
+(length-ld d7) 
 
-; (eq? (car-ld d6) ils)                 ; ===>  #t
-; (eq? (car-ld (cdr-ld d6)) d1)         ; ===>  #t
-; (eqv? (car-ld (cdr-ld (cdr-ld d6))) 37);===>  #t
-; (equal? (listdiff->list d6)
-;         (list ils d1 37))              ;===>  #t
-; (eq? (list-tail (car d6) 3) (cdr d6))  ;===>  #t
+(define kv1 (cons d1 'a))
+(define kv2 (cons d2 'b))
+(define kv3 (cons d3 'c))
+(define kv4 (cons d1 'd))
+(define d8 (listdiff kv1 kv2 kv3 kv4))
+(eq? (assq-ld d1 d8) kv1)              
+(eq? (assq-ld d2 d8) kv2)             ; ===>  #t
+(eq? (assq-ld d1 d8) kv4)              ;===>  #f
 
-; (listdiff->list (eval e1))        ;     ===>  (a e)
-; (equal? (listdiff->list (eval e1))
-;         (listdiff->list d1))
+(eq? (car-ld d6) ils)                 ; ===>  #t
+(eq? (car-ld (cdr-ld d6)) d1)         ; ===>  #t
+(eqv? (car-ld (cdr-ld (cdr-ld d6))) 37);===>  #t
+(equal? (listdiff->list d6)
+        (list ils d1 37))              ;===>  #t
+(eq? (list-tail (car d6) 3) (cdr d6))  ;===>  #t
+
+(listdiff->list (eval e1))        ;     ===>  (a e)
+(equal? (listdiff->list (eval e1))
+        (listdiff->list d1))
