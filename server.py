@@ -1,11 +1,12 @@
 #!/usr/bin/env python
-from twisted.internet.protocol import Protocol
+#!/usr/bin/env python
 
+# Copyright (c) Twisted Matrix Laboratories.
+# See LICENSE for details.
 
-from twisted.internet.protocol import Factory
-from twisted.internet.endpoints import TCP4ServerEndpoint
+from twisted.internet.protocol import Protocol, Factory
 from twisted.internet import reactor
-
+import sys
 
 # Google Places API key
 API_KEY="AIzaSyCguQHLUOCn_G_YADwcoW-qxIneZkLbCRo"
@@ -20,16 +21,29 @@ PORT_NUM = {
     'WELSH': 12692
 }
 
-class myProt(Protocol):
-	def connectionMade(self, addr):
-		self.transport.write("I connected to a prot!")
 
 
-class myFactory(Factory):
-	def buildProtocol(self, addr):
-		return myProt()
+
+### Protocol Implementation
+
+# This is just about the simplest possible protocol
+class Echo(Protocol):
+    def dataReceived(self, data):
+        """
+        As soon as any data is received, write it back.
+        """
+        self.transport.write(data)
 
 
-endpoint = TCP4ServerEndpoint(reactor, 12688)
-endpoint.listen(myFactory())
-reactor.run()
+def main():
+	for arg in sys.argv:
+		print arg 
+		
+    f = Factory()
+    f.protocol = Echo
+    reactor.listenTCP(8000, f)
+    reactor.run()
+
+if __name__ == '__main__':
+    main()
+
