@@ -38,7 +38,7 @@ class Echo(Protocol):
 def main():
 	
 	for arg in sys.argv:
-		if arg == "server.py"
+		if arg == "server.py":
 			continue 
 		else
 			print arg 
