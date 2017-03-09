@@ -41,9 +41,9 @@ def main():
 		print arg 
 
 	f = Factory()
-    f.protocol = Echo
-    reactor.listenTCP(8000, f)
-    reactor.run()
+	f.protocol = Echo
+	reactor.listenTCP(8000, f)
+	reactor.run()
 
 if __name__ == '__main__':
     main()
