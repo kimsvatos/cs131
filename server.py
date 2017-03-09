@@ -42,6 +42,8 @@ def main():
 			continue 
 		elif arg == PORT_NUM['ALFORD']:
 			print arg 
+		else:
+			print "boo"
 
 	f = Factory()
 	f.protocol = Echo
