@@ -36,10 +36,11 @@ class Echo(Protocol):
 
 
 def main():
+	
 	for arg in sys.argv:
 		print arg 
-		
-    f = Factory()
+
+	f = Factory()
     f.protocol = Echo
     reactor.listenTCP(8000, f)
     reactor.run()
