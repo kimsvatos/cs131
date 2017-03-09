@@ -38,7 +38,10 @@ class Echo(Protocol):
 def main():
 	
 	for arg in sys.argv:
-		print arg 
+		if arg == "server.py"
+			continue 
+		else
+			print arg 
 
 	f = Factory()
 	f.protocol = Echo
