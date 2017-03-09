@@ -40,7 +40,7 @@ def main():
 	for arg in sys.argv:
 		if arg == "server.py":
 			continue 
-		else
+		else:
 			print arg 
 
 	f = Factory()
