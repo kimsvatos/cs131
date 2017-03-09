@@ -31,7 +31,7 @@ class Echo(Protocol):
 	def connectionMade(self):
 		self.transport.write("connection made\r\n")
 
-    def dataReceived(self, data):
+	def dataReceived(self, data):
         """
         As soon as any data is received, write it back.
         """
