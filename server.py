@@ -40,7 +40,7 @@ def main():
 	for arg in sys.argv:
 		if arg == "server.py":
 			continue 
-		else:
+		elif arg == PORT_NUM["ALFORD"]:
 			print arg 
 
 	f = Factory()
