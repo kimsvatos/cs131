@@ -40,7 +40,7 @@ def main():
 	for arg in sys.argv:
 		if arg == "server.py":
 			continue 
-		elif arg == PORT_NUM['ALFORD']:
+		elif arg == str(PORT_NUM['ALFORD']):
 			print arg 
 		else:
 			print "boo"
