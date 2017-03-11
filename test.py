@@ -237,9 +237,11 @@ class ServerFactory(Factory):
         self.file = serverName + "Log.txt"
 
     def buildProtocol(self, addr):
+        print("tryna build protocol")
         return Server(self)
 
     def startFactory(self):
+        print("starting factory")
         self.fp = open(self.file, "a")
         self.fp.write("Create Log file for {0}\n".format(self.name))
 
