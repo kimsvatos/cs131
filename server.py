@@ -173,16 +173,16 @@ class Server(LineReceiver):
 
 		if clientName not in self.clients:
 			print("adding to self clients")
-			self.clients[client] = data
+			self.clients[clientName] = data
 			self.lFile.write("Received Prop: " + oldATstring + "\n")
 			self.flood(newATstring, orig, False)
-		elif self.clients[client] != data:
-			sTime = self.clients[client].split()
+		elif self.clients[clientName] != data:
+			sTime = self.clients[clientName].split()
 			sTime = sTime[-1]
 			print("doing ufnky thing")
 			if float(sTime) < float(ctime):
 				print("saving after float check")
-				self.clients[client] = data
+				self.clients[clientName] = data
 				self.lFile.write("Received Prop: " + " ".join(message) + "\n")
 				self.flood(newATstring, orig, False)
 
