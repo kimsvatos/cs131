@@ -23,11 +23,11 @@ PORT_NUM = {
 }
 
 SERV_RELATIONSHIP = {
-	'Alford' : ['Hamilton', 'Welsh'],
-	'Ball' : ['Holiday', 'Welsh'],
-	'Hamilton' : ['Alford', 'Holiday'],
-	'Holiday' : ['Ball', 'Hamilton'],
-	'Welsh' : ['Alford', 'Ball']
+	'ALFORD' : ['HAMILTON', 'WELSH'],
+	'BALL' : ['HOLIDAY', 'WELSH'],
+	'HAMILTON' : ['ALFORD', 'HOLIDAY'],
+	'HOLIDAY' : ['BALL', 'HAMILTON'],
+	'WELSH' : ['ALFORD', 'BALL']
 }
 
 
