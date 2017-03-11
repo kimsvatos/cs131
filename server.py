@@ -31,6 +31,7 @@ SERV_RELATIONSHIP = {
 
 class Server(LineReceiver):
 	def __init__(self, factory):
+		print("we init SERV")
 		self.name = None
 		self.factory = factory
 		self.clients = factory.clients
@@ -53,17 +54,16 @@ class Server(LineReceiver):
 		self.lFile.write("error! {0}, server response: {1}".format(error,note))
 
 	def lineReceived(self, line):
-		"""
-		As soon as any data is received, write it back.
-		"""
+
 		print("lineReceived!")
-		if len(line) == 0:
+		if not len(line):
 			self.processError(line, "Line empty")
 			return
 
 		data = line.strip()
 		msg = data.split()
 		if len(msg) < 4: #number of args we need
+			print("error in received")
 			self.processError(data, "Must have 4 args")
 			return
 

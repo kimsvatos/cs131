@@ -56,6 +56,7 @@ class PropagateFactory(Factory):
 
 class Server(LineReceiver):
     def __init__(self, factory):
+        print("server init TEST")
         self.name = None
         self.factory = factory
         self.clients = factory.clients
@@ -64,6 +65,7 @@ class Server(LineReceiver):
         self.serverList = PROP_ASSOCIATE[self.server]
 
     def connectionMade(self):
+        print("connectionMade TEST")
         self.factory.numConnections += 1
         msg = "A new client connected. Total: {0}".format(self.factory.numConnections)
         self.sendLine(msg)
@@ -82,7 +84,7 @@ class Server(LineReceiver):
         self.fp.write("Error: {0}\nServer's resonse: {1}\n".format(error, msg))
 
     def lineReceived(self, line):
-        print("we received a linein server")
+        print("we received a linein server TEST")
         if not len(line):
             self.receiveError(line, "Empty line")
             return
@@ -121,7 +123,7 @@ class Server(LineReceiver):
                 reactor.connectTCP("localhost", conf.PORT_NUM[server], PropagateFactory(line, self.fp))
 
     def handleIAMAT(self, msg):
-        print("were at IAMAT")
+        print("were at IAMAT TEST")
         if len(msg) != LENGTH_OR_ARGS["IAMAT"]:
             self.receiveError(" ".join(msg), "Number of input for IAMAT is incorrect.")
             return
