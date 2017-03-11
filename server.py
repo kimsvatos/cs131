@@ -287,7 +287,7 @@ def main():
 		exit(1)
 
 	servName = sys.argv[1]
-
+	print(sys.argv[1])
 	if servName in PORT_NUM:
 		portNumber = PORT_NUM[servName]
 		reactor.listenTCP(portNum, ServFactory(servName))
