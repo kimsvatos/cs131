@@ -11,8 +11,6 @@ import conf
 from twisted.protocols.basic import LineReceiver
 from twisted.web.client import getPage
 
-
-
 SERV_RELATIONSHIP = {
 	'ALFORD' : ['HAMILTON', 'WELSH'],
 	'BALL' : ['HOLIDAY', 'WELSH'],
@@ -22,16 +20,8 @@ SERV_RELATIONSHIP = {
 }
 
 
-### Protocol Implementation
-
-# This is just about the simplest possible protocol
-
-
-
-
 class Server(LineReceiver):
 	def __init__(self, factory):
-		print("we init SERV")
 		self.name = None
 		self.factory = factory
 		self.clients = factory.clients
@@ -41,20 +31,17 @@ class Server(LineReceiver):
 
 
 	def connectionMade(self):
-		print("connectionMade!")
 		self.factory.numConn += 1
 		note = "Connection made, total connections = {0}".format(self.factory.numConn)
 		self.sendLine(note)
 		self.lFile.write(note + "\n")
 
 	def processError(self, line, error):
-		print("and we processin' that error")
 		note = "ERROR: " + line
 		self.sendLine(note)
 		self.lFile.write("error! {0}, server response: {1}".format(error,note))
 
 	def lineReceived(self, line):
-		print("lineReceived!")
 		if not len(line):
 			self.processError(line, "Line empty")
 			return
@@ -62,22 +49,15 @@ class Server(LineReceiver):
 		data = line.strip()
 		msg = data.split()
 		if len(msg) < 4: #number of args we need
-			print("error in received")
 			self.processError(data, "Must have 4 args")
 			return
 
 		self.lFile.write("Client sent: " + data + "\n")
-		print(msg[0])
 		if msg[0] == "IAMAT":
-			print("we got an IAMAT!")
 			self.handleIAMAT(msg)
 		elif msg[0] == "AT":
-			print("we got an AT!")
-#TODO
 			self.handle_AT(msg)
 		elif msg[0] == "WHATSAT":
-			print("we got a WHATSAY!")
-#TODO
 			self.handle_WHATSAT(msg)
 		else:
 			self.processError(data, "Invalid option: must use IAMAT or WHATSAT.")
@@ -85,9 +65,7 @@ class Server(LineReceiver):
 
 
 	def flood(self, message, fromServer, exProp = True):
-		print("were in flood")
 		for serv in self.servList:
-			print("serv " + serv)
 			if exProp or serv != fromServer:
 				self.lFile.write("Attempt to propogate info to " + serv + "\n")
 				reactor.connectTCP("localhost", conf.PORT_NUM[serv], PropFactory(message, self.lFile))
@@ -109,10 +87,9 @@ class Server(LineReceiver):
 		loc = loc.split()
 		
 		if len(loc)!= 2:
-			print("loc err imaata")
 			self.processError(" ".join(message), "Must have 2 location parameters")
 			return
-			#can use helper
+
 		try:
 			testloc1 = float(loc[0])
 			testloc2 = float(loc[1])
@@ -120,8 +97,6 @@ class Server(LineReceiver):
 			self.processError(" ".join(message), "invalid location")
 			return
 
-		#ctime = message[3]
-			#can use helper
 		try:
 			testTime = float(ctime)
 		except:
@@ -129,11 +104,9 @@ class Server(LineReceiver):
 			return
 
 		data = " ".join(message[1:])
-		print("self name : " + self.name)
-		print(data)
+
 		self.clients[self.name] = data
-		for client in self.clients:
-			print ("looping " + client)
+
 		atMessage = self.makeATstring(ctime, data)
 		self.sendLine(atMessage)
 		self.lFile.write("Server responds: " + atMessage + "\n")
@@ -141,16 +114,13 @@ class Server(LineReceiver):
 
 
 	def makeATstring(self, ctime, data):
-		print("tying to make at string!")
 		timeChange = time.time() - float(ctime)
 		timeChange = str(timeChange)
 		if timeChange[0] != '-':
 			timeChange = "+" + timeChange
-
 		return "AT " + self.serverName + " " + timeChange + " " + data
 
 	def handle_AT(self, message):
-		print("trying to handle at!")
 		if len(message) != 6:
 			self.processError(" ".join(message), "AT requires 6 parameters")
 			return
@@ -174,60 +144,48 @@ class Server(LineReceiver):
 		newATstring = " ".join(message)
 
 		if clientName not in self.clients:
-			print("adding to self clients")
+		#	print("adding to self clients")
 			self.clients[clientName] = data
 			self.lFile.write("Received Prop: " + oldATstring + "\n")
 			self.flood(newATstring, orig, False)
 		elif self.clients[clientName] != data:
 			sTime = self.clients[clientName].split()
 			sTime = sTime[-1]
-			print("doing ufnky thing")
+#			print("doing ufnky thing")
 			if float(sTime) < float(ctime):
-				print("saving after float check")
+			#	print("saving after float check")
 				self.clients[clientName] = data
 				self.lFile.write("Received Prop: " + " ".join(message) + "\n")
 				self.flood(newATstring, orig, False)
 
 	def handle_WHATSAT(self, message):
-		print("trying t ohandle whatsay!")
 		if len(message)!= 4:
 			self.processError(" ".join(message), "WHATSAT requires 4 parameters")
-			print("whatst req 4")
 			return
 
 		cmdWHATSAT, client, rad, limit = message
-		#client = message[1]
-		print("whatsat client: " + client)
-		for client in self.clients:
-			print(client)
+
 		if client not in self.clients:
 			self.processError(" ".join(message), "Invalid client")
-			print("invalid client whatstay")
 			return
-		print("we making progress")
-		#rad = message[2]
-		#limit = message[3]
+
 		try:
 			rad = float(rad)
 			rad *= 1000
 		except:
 			self.processError(" ".join(message), "Radius is incorrect format")
-			print("rad incorrect whatsat")
 			return
 		try:
 			limit = int(limit)
 		except:
-			print("limit fucked up")
 			self.processError(" ".join(message), "Upper Bound Limit is incorrect format")
 			return
 
 		if rad <= 0 or rad > 50000:
-			print("radius 2 big")
 			print(rad)
 			self.processError(" ".join(message), "Radius in incorrect range")
 			return
 		if limit <=0 or limit >20:
-			print("lim to big whatever")
 			self.processError(" ".join(message), "Upper Bound Limit in incorrect range")
 			return
 
@@ -237,15 +195,12 @@ class Server(LineReceiver):
 		loc = loc.replace("+", " +")
 		loc = loc.split()
 		
-		print("about to request google")
 		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&key={3}".format(loc[0], loc[1], rad, conf.API_KEY)
 		data = getPage(url)
-		print("we got a page")
-		data.addCallback(self.handle_JSON, limit=limit, client=client)
+		data.addCallback(self.callback_JSON, limit=limit, client=client)
 		
 
-	def handle_JSON(self, data, limit, client):
-		print("chandling json!")
+	def callback_JSON(self, data, limit, client):
 		placejson = json.loads(data)
 		placejson["results"] = placejson["results"][:limit]
 		jsonBLOB = json.dumps(placejson, indent = 4, separators = (',', ': '))
@@ -265,11 +220,9 @@ class ServFactory(Factory):
 		self.clients = {}
 
 	def buildProtocol(self, port):
-		print("tryna build prtocol!")
 		return Server(self)
 
 	def startFactory(self):
-		print("startin factory!")
 		self.lFile = open(self.log, "a")
 		self.lFile.write("Creating log for {0} \n".format(self.name))
 
@@ -278,16 +231,12 @@ class ServFactory(Factory):
 
 
 
-
-
 class Prop(Protocol):
 	def __init__(self, message):
 		self.message = message
 	def connectionMade(self):
-		print("were in the prop class")
 		self.transport.write(self.message)
 		self.transport.loseConnection()
-
 
 
 class PropFactory(Factory):
@@ -307,9 +256,6 @@ class PropFactory(Factory):
 		self.lFile.write("Propogation connection failed with error: {0}\n".format(why))
 
 
-
-
-
 def main():
 	
 	if len(sys.argv) != 2:
@@ -319,7 +265,6 @@ def main():
 	servName = sys.argv[1]
 	print(sys.argv[1])
 	if servName in conf.PORT_NUM:
-		print("yes!")
 		portNumber = conf.PORT_NUM[servName]
 		reactor.listenTCP(portNumber, ServFactory(servName))
 		reactor.run()
@@ -327,11 +272,6 @@ def main():
 		sys.stderr.write("Server name not valid.\n")
 		exit(1)
 
-
-	#f = Factory()
-	#f.protocol = Echo
-	#reactor.listenTCP(8000, f)
-	#reactor.run()
 
 if __name__ == '__main__':
     main()
