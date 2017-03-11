@@ -246,7 +246,7 @@ class Server(LineReceiver):
 			self.processError(" ".join(message), "Upper Bound Limit is incorrect format")
 			return
 
-		if rad <= 0 or rad > 50:
+		if rad <= 0 or rad > 50000:
 			print("radius 2 big")
 			print(rad)
 			self.processError(" ".join(message), "Radius in incorrect range")
