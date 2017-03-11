@@ -288,10 +288,10 @@ def main():
 
 	servName = sys.argv[1]
 	print(sys.argv[1])
-	if str(servName) in PORT_NUM:
+	if servName in PORT_NUM:
 		print("yes!")
 		portNumber = PORT_NUM[servName]
-		reactor.listenTCP(portNum, ServFactory(servName))
+		reactor.listenTCP(portNumber, ServFactory(servName))
 		reactor.run()
 	else:
 		sys.stderr.write("Server name not valid.\n")
