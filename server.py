@@ -26,34 +26,6 @@ SERV_RELATIONSHIP = {
 
 # This is just about the simplest possible protocol
 
-class Prop(Protocol):
-	def __init__(self, message):
-		self.message = message
-	def connectionMade(self):
-		self.transport.write(self.message)
-		self.transport.loseConnection()
-
-
-
-class PropFactory(Factory):
-	#def startedConnecting(self, connector):
-#	return 
-	
-	def __init__(self, message, lFile):
-		self.message = message
-		self.lFile = lFile
-
-	#def startedConnecting(self, conn):
-#		return
-	def buildProtocol(self, port):
-		return Prop(self.message)
-
-	#def clientConnectionLost(self, conn, why):
-	#	self.lFile.write("Propogation connection lost because: {0}\n".format(why))
-
-#	def clientConnectionFailed(self, conn, why):
-	#	self.lFile.write("Propogation connection failed with error: {0}\n".format(why))
-
 
 
 
@@ -292,6 +264,38 @@ class ServFactory(Factory):
 
 	def stopFactory(self):
 		self.lFile.close()
+
+
+class Prop(Protocol):
+	def __init__(self, message):
+		self.message = message
+	def connectionMade(self):
+		self.transport.write(self.message)
+		self.transport.loseConnection()
+
+
+
+class PropFactory(Factory):
+	#def startedConnecting(self, connector):
+#	return 
+	
+	def __init__(self, message, lFile):
+		self.message = message
+		self.lFile = lFile
+
+	def startedConnecting(self, conn):
+		return
+	def buildProtocol(self, port):
+		return Prop(self.message)
+
+	def clientConnectionLost(self, conn, why):
+		self.lFile.write("Propogation connection lost because: {0}\n".format(why))
+
+	def clientConnectionFailed(self, conn, why):
+		self.lFile.write("Propogation connection failed with error: {0}\n".format(why))
+
+
+
 
 
 def main():
