@@ -240,7 +240,7 @@ class Server(LineReceiver):
 			print("rad incorrect whatsat")
 			return
 		try:
-			limit = int(lim)
+			limit = int(limit)
 		except:
 			print("limit fucked up")
 			self.processError(" ".join(message), "Upper Bound Limit is incorrect format")
