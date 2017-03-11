@@ -237,9 +237,9 @@ class Server(LineReceiver):
 		
 		print("about to request google")
 		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&types=food&name=cruise&key={3}".format(loc[0], loc[1], rad, conf.API_KEY)
-		pageGot = getPage(url)
+		data = getPage(url)
 		print("we got a page")
-		pageGot.addCallback(self.handle_JSON, pageGot, limit=limit, client=client)
+		data.addCallback(self.handle_JSON, limit=limit, client=client)
 		
 
 	def handle_JSON(self, data, limit, client):
