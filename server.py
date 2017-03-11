@@ -86,6 +86,7 @@ class Server(LineReceiver):
 
 
 	def flood(self, message, fromServer, exProp = True):
+		print("were in flood")
 		for serv in self.servList:
 			if exProp or serv != fromServer:
 				self.lFile.write("Attempt to propogate info to " + serv + "\n")
