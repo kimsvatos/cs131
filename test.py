@@ -82,6 +82,7 @@ class Server(LineReceiver):
         self.fp.write("Error: {0}\nServer's resonse: {1}\n".format(error, msg))
 
     def lineReceived(self, line):
+        print("we received a linein server")
         if not len(line):
             self.receiveError(line, "Empty line")
             return
