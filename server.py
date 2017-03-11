@@ -188,6 +188,9 @@ class Server(LineReceiver):
 			return
 
 		client = message[1]
+		print("client: " + client)
+		for client in self.clients:
+			print(client)
 		if client not in self.clients:
 			self.processError(" ".join(message), "Invalid client")
 			print("invalid client whatstay")
@@ -228,7 +231,7 @@ class Server(LineReceiver):
 		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&types=food&name=cruise&key={3}".format(loc[0], loc[1], rad, conf.API_KEY)
 		pageGot = getPage(url)
 		pageGot.addCallback(self.handle_JSON, limit=limit, client=client)
-		#pageGot.addErrBack(self.handle_GOOGERR, message=message)
+		
 
 	def handle_JSON(self, data, limit, client):
 		print("chandling json!")
@@ -241,9 +244,6 @@ class Server(LineReceiver):
 		res = res.rstrip("\n") + "\n\n"
 		self.transport.write(res)
 		self.lFile.write("server responds : " + res + "\n")
-
-	#def handle_GOOGERR(self, err, message):
-	#	self.processError(" ".join(message), err)
 
 
 class ServFactory(Factory):
@@ -266,6 +266,9 @@ class ServFactory(Factory):
 		self.lFile.close()
 
 
+
+
+
 class Prop(Protocol):
 	def __init__(self, message):
 		self.message = message
@@ -276,9 +279,6 @@ class Prop(Protocol):
 
 
 class PropFactory(Factory):
-	#def startedConnecting(self, connector):
-#	return 
-	
 	def __init__(self, message, lFile):
 		self.message = message
 		self.lFile = lFile
