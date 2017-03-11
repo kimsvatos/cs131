@@ -31,6 +31,7 @@ class Propagate(Protocol):
         self.line = line
 
     def connectionMade(self):
+        print("were in the prop class")
         self.transport.write(self.line)
         self.transport.loseConnection()
 

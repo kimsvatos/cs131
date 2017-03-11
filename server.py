@@ -280,6 +280,7 @@ class Prop(Protocol):
 	def __init__(self, message):
 		self.message = message
 	def connectionMade(self):
+		print("were in the prop class")
 		self.transport.write(self.message)
 		self.transport.loseConnection()
 
