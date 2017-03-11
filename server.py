@@ -31,7 +31,7 @@ class Prop(Protocol):
 		self.message = message
 	def connectionMade(self):
 		self.transport.write(self.message)
-		self.transport.loserConnection()
+		self.transport.loseConnection()
 
 
 
@@ -43,16 +43,16 @@ class PropFactory(Factory):
 		self.message = message
 		self.lFile = lFile
 
-	def startedConnecting(self, conn):
-		return
+	#def startedConnecting(self, conn):
+#		return
 	def buildProtocol(self, port):
 		return Prop(self.message)
 
-	def clientConnectionLost(self, conn, why):
-		self.lFile.write("Propogation connection lost because: {0}\n".format(why))
+	#def clientConnectionLost(self, conn, why):
+	#	self.lFile.write("Propogation connection lost because: {0}\n".format(why))
 
-	def clientConnectionFailed(self, conn, why):
-		self.lFile.write("Propogation connection failed with error: {0}\n".format(why))
+#	def clientConnectionFailed(self, conn, why):
+	#	self.lFile.write("Propogation connection failed with error: {0}\n".format(why))
 
 
 
