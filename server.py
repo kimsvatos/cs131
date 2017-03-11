@@ -244,6 +244,8 @@ class Server(LineReceiver):
 
 	def handle_JSON(self, data, limit, client):
 		print("chandling json!")
+		testSTring = data
+		print(testSTring)
 		placejson = json.loads(data)
 		placejson["results"] = placejson["results"][:limit]
 		jsonBLOB = json.dumps(placejson, indent = 4, separators = (',', ': '))
