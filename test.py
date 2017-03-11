@@ -112,12 +112,14 @@ class Server(LineReceiver):
         return location.replace("+", " +").replace("-", " -").split()
 
     def propagate(self, line, origServer, excludePropagator = True):
+        print("we're in propogate")
         for server in self.serverList:
             if excludePropagator or server != origServer:
                 self.fp.write("Try to propogate to " + server + "\n")
                 reactor.connectTCP("localhost", conf.PORT_NUM[server], PropagateFactory(line, self.fp))
 
     def handleIAMAT(self, msg):
+        print("were at IAMAT")
         if len(msg) != LENGTH_OR_ARGS["IAMAT"]:
             self.receiveError(" ".join(msg), "Number of input for IAMAT is incorrect.")
             return
@@ -144,6 +146,7 @@ class Server(LineReceiver):
         self.propagate(line, "Client", False)  # Propagate
 
     def handleAT(self, msg):
+        print("we're in handle at")
         if len(msg) != LENGTH_OR_ARGS["AT"]:
             self.receiveError(" ".join(msg), "Number of parameters for AT is incorrect.")
             return
@@ -177,6 +180,7 @@ class Server(LineReceiver):
                 self.propagate(ATMsg, origServer, False)  # Propagate
 
     def handleWHATSAT(self, msg):
+        print("were in whatsat")
         if len(msg) != LENGTH_OR_ARGS["WHATSAT"]:
             self.receiveError(" ".join(msg), "Wrong number of parameters for WHATSAT.")
             return
