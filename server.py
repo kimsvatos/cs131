@@ -171,7 +171,7 @@ class Server(LineReceiver):
 		message[1] = self.serverName
 		newATstring = " ".join(message)
 
-		if c not in self.clients:
+		if clientName not in self.clients:
 			print("adding to self clients")
 			self.clients[client] = data
 			self.lFile.write("Received Prop: " + oldATstring + "\n")
