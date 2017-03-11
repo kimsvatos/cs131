@@ -7,21 +7,11 @@
 from twisted.internet.protocol import Protocol, Factory
 from twisted.internet import reactor
 import sys, time, json
+import conf
 from twisted.protocols.basic import LineReceiver
 from twisted.web.client import getPage
 
-# Google Places API key
-API_KEY="AIzaSyCguQHLUOCn_G_YADwcoW-qxIneZkLbCRo"
 
-# TCP port numbers for server instances
-# Please use the port numbers allocated by the TA.
-PORT_NUM = {
-    'ALFORD': 12688,
-    'BALL': 12689,
-    'HAMILTON': 12690,
-    'HOLIDAY': 12691,
-    'WELSH': 12692
-}
 
 SERV_RELATIONSHIP = {
 	'ALFORD' : ['HAMILTON', 'WELSH'],
@@ -132,7 +122,7 @@ class Server(LineReceiver):
 		for serv in self.servList:
 			if exProp or serv != fromServer:
 				self.lFile.write("Attempt to propogate info to " + serv + "\n")
-				reactor.connectTCP("localhost", PORT_NUM[serv], PropFactory(message, self.lFile))
+				reactor.connectTCP("localhost", conf.PORT_NUM[serv], PropFactory(message, self.lFile))
 
 	def handleIAMAT(self, message):
 		print("trying to handle iamat!")
@@ -190,7 +180,7 @@ class Server(LineReceiver):
 			return
 
 		orig = message[1]
-		if orig not in PORT_NUM:
+		if orig not in conf.PORT_NUM:
 			self.processError(" ".join(message), "Unrecognized server name")
 			return
 
@@ -260,7 +250,7 @@ class Server(LineReceiver):
 		data = self.clients[client].split()
 		loc = self.splitLoc(data[1])
 		
-		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&types=food&name=cruise&key={3}".format(loc[0], loc[1], rad, API_KEY)
+		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&types=food&name=cruise&key={3}".format(loc[0], loc[1], rad, conf.API_KEY)
 		pageGot = getPage(url).addCallback(self.handle_JSON, limit=limit, client=client)
 		pageGot.addErrBack(self.handle_GOOGERR, message=message)
 
@@ -308,9 +298,9 @@ def main():
 
 	servName = sys.argv[1]
 	print(sys.argv[1])
-	if servName in PORT_NUM:
+	if servName in conf.PORT_NUM:
 		print("yes!")
-		portNumber = PORT_NUM[servName]
+		portNumber = conf.PORT_NUM[servName]
 		reactor.listenTCP(portNumber, ServFactory(servName))
 		reactor.run()
 	else:
