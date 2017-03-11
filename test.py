@@ -229,6 +229,7 @@ class Server(LineReceiver):
         d.addErrback(self.handleGoogleError, msg = msg)
 
     def handleJSON(self, data, upperBound, client):
+        print("handling JSON TEST")
         placeData = json.loads(data)
         placeData["results"] = placeData["results"][: upperBound]
         JSONStr = json.dumps(placeData, indent = 4, separators = (',', ': '))

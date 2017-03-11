@@ -236,20 +236,20 @@ class Server(LineReceiver):
 		
 		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&types=food&name=cruise&key={3}".format(loc[0], loc[1], rad, conf.API_KEY)
 		pageGot = getPage(url)
-		pageGot.addCallback(self.handle_JSON, limit=limit, client=client)
+		pageGot.addCallback(self.handle_JSON, pageGot, limit=limit, client=client)
 		
 
 	def handle_JSON(self, data, limit, client):
 		print("chandling json!")
 		placejson = json.loads(data)
 		placejson["results"] = placejson["results"][:limit]
-		jsonBLOB = json.dumps(placejson, indent = 3, separators = (',', ': '))
+		jsonBLOB = json.dumps(placejson, indent = 4, separators = (',', ': '))
 		savedData = self.clients[client]
 		ctime = savedData.split()[-1]
 		res = self.makeATstring(ctime, savedData) + "\n" + jsonBLOB
 		res = res.rstrip("\n") + "\n\n"
 		self.transport.write(res)
-		self.lFile.write("server responds : " + res + "\n")
+		self.lFile.write("server responds :\n " + res + "\n")
 
 
 class ServFactory(Factory):
