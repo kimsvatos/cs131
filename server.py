@@ -8,6 +8,7 @@ from twisted.internet.protocol import Protocol, Factory
 from twisted.internet import reactor
 import sys, time, json
 from twisted.protocols.basic import LineReceiver
+from twisted.web.client import getPage
 
 # Google Places API key
 API_KEY="AIzaSyCguQHLUOCn_G_YADwcoW-qxIneZkLbCRo"
