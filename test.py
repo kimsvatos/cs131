@@ -8,12 +8,13 @@ import sys, time, json, conf
 COMMAND = ["IAMAT", "AT", "WHATSAT"]
 LENGTH_OR_ARGS = {"IAMAT": 4, "AT": 6, "WHATSAT": 4, "MIN": 4}
 PROP_ASSOCIATE = {
-    'Alford': ['Hamilton', 'Welsh'],
-    'Ball': ['Holiday', 'Welsh'],
-    'Hamilton': ['Alford', 'Holiday'],
-    'Holiday': ['Ball', 'Hamilton'],
-    'Welsh': ['Alford', 'Ball']
+    'ALFORD' : ['HAMILTON', 'WELSH'],
+    'BALL' : ['HOLIDAY', 'WELSH'],
+    'HAMILTON' : ['ALFORD', 'HOLIDAY'],
+    'HOLIDAY' : ['BALL', 'HAMILTON'],
+    'WELSH' : ['ALFORD', 'BALL']
 }
+
 
 
 # http://stackoverflow.com/questions/354038/how-do-i-check-if-a-string-is-a-number-float-in-python
