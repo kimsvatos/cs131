@@ -273,7 +273,7 @@ class ServFactory(Factory):
 		return Server(self)
 
 	def startFactory(self):
-		self.lFile = open(self.file, "a")
+		self.lFile = open(self.log, "a")
 		self.lFile.write("Creating log for {0} \n".format(self.name))
 
 	def stopFactory(self):
