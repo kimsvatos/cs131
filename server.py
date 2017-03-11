@@ -201,6 +201,7 @@ class Server(LineReceiver):
 			self.processError(" ".join(message), "Invalid client")
 			print("invalid client whatstay")
 			return
+		print("we making progress")
 		rad = message[2]
 		limit = message[3]
 		try:
