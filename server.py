@@ -287,7 +287,7 @@ class Prop(Protocol):
 
 class PropFactory(Factory):
 	def __init__(self, message, lFile):
-		self.message = message
+		self.message = message + "\r\n"
 		self.lFile = lFile
 
 	def startedConnecting(self, conn):
