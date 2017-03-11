@@ -222,11 +222,13 @@ class Server(LineReceiver):
 		print("trying t ohandle whatsay!")
 		if len(message)!= 4:
 			self.processError(" ".join(message), "WHATSAT requires 4 parameters")
+			print("whatst req 4")
 			return
 
 		client = message[1]
 		if client not in self.clients:
 			self.processError(" ".join(message), "Invalid client")
+			print("invalid client whatstay")
 			return
 		rad = message[2]
 		limit = message[3]
@@ -235,17 +237,21 @@ class Server(LineReceiver):
 			rad *= 1000
 		except:
 			self.processError(" ".join(message), "Radius is incorrect format")
+			print("rad incorrect whatsat")
 			return
 		try:
 			limit = int(lim)
 		except:
+			print("limit fucked up")
 			self.processError(" ".join(message), "Upper Bound Limit is incorrect format")
 			return
 
 		if rad <= 0 or rad > 50:
+			print("radius 2 big")
 			self.processError(" ".join(message), "Radius in incorrect range")
 			return
 		if limit <=0 or limit >20:
+			print("lim to big whatever")
 			self.processError(" ".join(message), "Upper Bound Limit in incorrect range")
 			return
 
