@@ -247,7 +247,7 @@ class Server(LineReceiver):
 			return
 
 		if rad <= 0 or rad > 50:
-			print("radius 2 big")
+			print("radius 2 big " + rad)
 			self.processError(" ".join(message), "Radius in incorrect range")
 			return
 		if limit <=0 or limit >20:
