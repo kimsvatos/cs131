@@ -193,7 +193,8 @@ class Server(LineReceiver):
 			print("whatst req 4")
 			return
 
-		client = message[1]
+		cmd, client, rad, limit = message
+		#client = message[1]
 		print("whatsat client: " + client)
 		for client in self.clients:
 			print(client)
@@ -202,8 +203,8 @@ class Server(LineReceiver):
 			print("invalid client whatstay")
 			return
 		print("we making progress")
-		rad = message[2]
-		limit = message[3]
+		#rad = message[2]
+		#limit = message[3]
 		try:
 			rad = float(rad)
 			rad *= 1000
@@ -237,6 +238,7 @@ class Server(LineReceiver):
 		print("about to request google")
 		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&types=food&name=cruise&key={3}".format(loc[0], loc[1], rad, conf.API_KEY)
 		pageGot = getPage(url)
+		print("we got a page")
 		pageGot.addCallback(self.handle_JSON, pageGot, limit=limit, client=client)
 		
 
