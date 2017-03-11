@@ -236,7 +236,7 @@ class Server(LineReceiver):
 		loc = loc.split()
 		
 		print("about to request google")
-		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&types=food&name=cruise&key={3}".format(loc[0], loc[1], rad, conf.API_KEY)
+		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&key={3}".format(loc[0], loc[1], rad, conf.API_KEY)
 		data = getPage(url)
 		print("we got a page")
 		data.addCallback(self.handle_JSON, limit=limit, client=client)
@@ -244,8 +244,6 @@ class Server(LineReceiver):
 
 	def handle_JSON(self, data, limit, client):
 		print("chandling json!")
-		testSTring = data
-		print(testSTring)
 		placejson = json.loads(data)
 		placejson["results"] = placejson["results"][:limit]
 		jsonBLOB = json.dumps(placejson, indent = 4, separators = (',', ': '))
