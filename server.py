@@ -128,6 +128,7 @@ class Server(LineReceiver):
 
 
 		data = " ".join(message[1:])
+		print("self name : " + self.name)
 		self.clients[self.name] = data
 		atMessage = self.makeATstring(ctime, data)
 		self.sendLine(atMessage)
