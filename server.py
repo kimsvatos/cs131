@@ -103,13 +103,13 @@ class Server(LineReceiver):
 
 		self.lFile.write("Client sent: " + data + "\n")
 
-		if msg[0] = "IAMAT":
+		if msg[0] == "IAMAT":
 # TODO
 			self.handle_IAMAT(msg)
-		elif msg[0] = "AT":
+		elif msg[0] == "AT":
 #TODO
 			self.handle_AT(msg)
-		elif msg[0] = "WHATSAT":
+		elif msg[0] == "WHATSAT":
 #TODO
 			self.handle_WHATSAT(msg)
 		else:
