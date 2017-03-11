@@ -111,11 +111,6 @@ class Server(LineReceiver):
 		else:
 			self.processError(data, "Invalid option: must use IAMAT or WHATSAT.")
 
-	def splitLoc(self, loc):
-		loc = loc.replace("-", " -")
-		loc = loc.replace("+", " +")
-		loc = loc.split()
-		return loc
 
 
 	def flood(self, message, fromServer, exProp = True):
@@ -133,7 +128,11 @@ class Server(LineReceiver):
 		self.name = message[1]
 		loc = message[2]
 
-		loc = self.splitLoc(loc)
+		#loc = self.splitLoc(loc)
+		loc = loc.replace("-", " -")
+		loc = loc.replace("+", " +")
+		loc = loc.split()
+		
 		if len(loc)!= 2:
 			self.processError(" ".join(message), "Must have 2 location parameters")
 			return
@@ -248,11 +247,16 @@ class Server(LineReceiver):
 			return
 
 		data = self.clients[client].split()
-		loc = self.splitLoc(data[1])
+		loc = data[1]
+		loc = loc.replace("-", " -")
+		loc = loc.replace("+", " +")
+		loc = loc.split()
+		
 		
 		url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location={0},{1}&radius={2}&types=food&name=cruise&key={3}".format(loc[0], loc[1], rad, conf.API_KEY)
-		pageGot = getPage(url).addCallback(self.handle_JSON, limit=limit, client=client)
-		pageGot.addErrBack(self.handle_GOOGERR, message=message)
+		pageGot = getPage(url)
+		pageGot.addCallback(self.handle_JSON, limit=limit, client=client)
+		#pageGot.addErrBack(self.handle_GOOGERR, message=message)
 
 	def handle_JSON(self, data, limit, client):
 		print("chandling json!")
@@ -266,8 +270,8 @@ class Server(LineReceiver):
 		self.transport.write(res)
 		self.lFile.write("server responds : " + res + "\n")
 
-	def handle_GOOGERR(self, err, message):
-		self.processError(" ".join(message), err)
+	#def handle_GOOGERR(self, err, message):
+	#	self.processError(" ".join(message), err)
 
 
 class ServFactory(Factory):
