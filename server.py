@@ -108,7 +108,6 @@ class Server(LineReceiver):
 		print(msg[0])
 		if msg[0] == "IAMAT":
 			print("we got an IAMAT!")
-# TODO
 			self.handle_IAMAT(msg)
 		elif msg[0] == "AT":
 			print("we got an AT!")
