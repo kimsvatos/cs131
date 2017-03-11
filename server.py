@@ -84,6 +84,7 @@ class Server(LineReceiver):
 		self.lFile.write(note + "\n")
 
 	def processError(self, line, error):
+		print("and we processin' that error")
 		note = "ERROR: " + line
 		self.sendLine(note)
 		self.lFile.write()
@@ -104,7 +105,7 @@ class Server(LineReceiver):
 			return
 
 		self.lFile.write("Client sent: " + data + "\n")
-
+		print(msg[0])
 		if msg[0] == "IAMAT":
 			print("we got an IAMAT!")
 # TODO
