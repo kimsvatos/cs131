@@ -98,8 +98,10 @@ class Server(LineReceiver):
 			self.processError(" ".join(message), "IAMAT takes 4 args")
 		if "-" not in message[2] and "+" not in message[2]:
 			self.processError(" ".join(message), "Improper location, must have + or -")
-		self.name = message[1]
-		loc = message[2]
+		
+		cmdAT, self.name, loc, ctime = message
+		#self.name = message[1]
+		#loc = message[2]
 
 		#loc = self.splitLoc(loc)
 		loc = loc.replace("-", " -")
@@ -118,7 +120,7 @@ class Server(LineReceiver):
 			self.processError(" ".join(message), "invalid location")
 			return
 
-		ctime = message[3]
+		#ctime = message[3]
 			#can use helper
 		try:
 			testTime = float(ctime)
@@ -193,7 +195,7 @@ class Server(LineReceiver):
 			print("whatst req 4")
 			return
 
-		cmd, client, rad, limit = message
+		cmdWHATSAT, client, rad, limit = message
 		#client = message[1]
 		print("whatsat client: " + client)
 		for client in self.clients:
