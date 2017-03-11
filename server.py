@@ -106,6 +106,7 @@ class Server(LineReceiver):
 		loc = loc.split()
 		
 		if len(loc)!= 2:
+			print("loc err imaata")
 			self.processError(" ".join(message), "Must have 2 location parameters")
 			return
 			#can use helper
@@ -123,12 +124,10 @@ class Server(LineReceiver):
 		except:
 			self.processError(" ".join(message), "invalid time")
 			return
-	
-
-
 
 		data = " ".join(message[1:])
 		print("self name : " + self.name)
+		print(data)
 		self.clients[self.name] = data
 		atMessage = self.makeATstring(ctime, data)
 		self.sendLine(atMessage)
@@ -170,13 +169,16 @@ class Server(LineReceiver):
 		newATstring = " ".join(message)
 
 		if c not in self.clients:
+			print("adding to self clients")
 			self.clients[client] = data
 			self.lFile.write("Received Prop: " + oldATstring + "\n")
 			self.flood(newATstring, orig, False)
 		elif self.clients[client] != data:
 			sTime = self.clients[client].split()
 			sTime = sTime[-1]
+			print("doing ufnky thing")
 			if float(sTime) < float(ctime):
+				print("saving after float check")
 				self.clients[client] = data
 				self.lFile.write("Received Prop: " + " ".join(message) + "\n")
 				self.flood(newATstring, orig, False)
@@ -189,7 +191,7 @@ class Server(LineReceiver):
 			return
 
 		client = message[1]
-		print("client: " + client)
+		print("whatsat client: " + client)
 		for client in self.clients:
 			print(client)
 		if client not in self.clients:
