@@ -87,7 +87,7 @@ class Server(LineReceiver):
 		print("and we processin' that error")
 		note = "ERROR: " + line
 		self.sendLine(note)
-		self.lFile.write()
+		self.lFile.write("error! {0}, server response: {1}".format(error,note))
 
 	def lineReceived(self, line):
 		"""
