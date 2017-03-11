@@ -108,7 +108,7 @@ class Server(LineReceiver):
 		print(msg[0])
 		if msg[0] == "IAMAT":
 			print("we got an IAMAT!")
-			self.handle_IAMAT(msg)
+			self.handleIAMAT(msg)
 		elif msg[0] == "AT":
 			print("we got an AT!")
 #TODO
@@ -133,7 +133,7 @@ class Server(LineReceiver):
 					self.lFile.write("Attempt to propogate info to " + serv + "\n")
 					reactor.connectTCP("localhost", PORT_NUM[serv], PropFactory(message, self.lFile))
 
-		def handle_IAMAT(self, message):
+		def handleIAMAT(self, message):
 			print("trying to handle iamat!")
 			if len(message) != 4:
 				self.processError(" ".join(message), "IAMAT takes 4 args")
