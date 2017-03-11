@@ -17,15 +17,6 @@ PROP_ASSOCIATE = {
 
 
 
-# http://stackoverflow.com/questions/354038/how-do-i-check-if-a-string-is-a-number-float-in-python
-def validFloat(s):
-    try:
-        float(s)
-        return True
-    except ValueError:
-        return False
-
-
 class Propagate(Protocol):
     def __init__(self, line):
         self.line = line
@@ -133,14 +124,25 @@ class Server(LineReceiver):
             self.receiveError(" ".join(msg), "Invalid location parameter in the input.")
             return
         location = self.parseLocation(location)
-        if len(location) != 2 or (not validFloat(location[0]) or not validFloat(location[1])):
+        if len(location) != 2:
+            self.receiveError(" ".join(msg), "Invalid len location.")
+            return
+
+        try:
+            loc1 = float(location[0])
+            loc2 = float(location[1])
+        except:
             self.receiveError(" ".join(msg), "Invalid location parameter in the input.")
             return
 
         clientTime = msg[3]
-        if not validFloat(clientTime):
+
+        try:
+            ctest = float(clientTime)
+        except:
             self.receiveError(" ".join(msg), "Invalid time parameter in the input.")
             return
+    
 
         infoToStore = " ".join(msg[1:])
         self.clients[self.name] = infoToStore
@@ -162,9 +164,13 @@ class Server(LineReceiver):
 
         client = msg[3]
         clientTime = msg[-1]
-        if not validFloat(clientTime):
+
+        try:
+            ctest = float(clientTime)
+        except:
             self.receiveError(" ".join(msg), "Invalid time in the input.")
             return
+
 
         infoToStore = " ".join(msg[3:])
         origATMsg = " ".join(msg)
@@ -172,13 +178,16 @@ class Server(LineReceiver):
         ATMsg = " ".join(msg)
 
         if client not in self.clients:
+            print("adding self to clinets?")
             self.clients[client] = infoToStore
             self.fp.write("Received Propogation:\n" + origATMsg + "\n")
             self.propagate(ATMsg, origServer, False)  # Propagate
 
         elif self.clients[client] != infoToStore:
+            print("SELF FLOODING TEST")
             storeTime = self.clients[client].split()[-1]
             if float(storeTime) < float(clientTime):
+                print("self flooding")
                 self.clients[client] = infoToStore
                 self.fp.write("Received Propogation:\n" + " ".join(msg) + "\n")
                 self.propagate(ATMsg, origServer, False)  # Propagate
@@ -192,11 +201,15 @@ class Server(LineReceiver):
         client = msg[1]
         radius = msg[2]
         upperBound = msg[3]
-        if not validFloat(radius) or not upperBound.isdigit():
-            self.receiveError(" ".join(msg), "Radius or Upper bound format incorrect for WHATSAT.")
+
+        try:
+            radius = float(radius)
+            upperBound = int(upperBound)
+        except: 
+            self.receiveError(" ".join(msg), "Radius or upper bound (int) needs to be float for WHATSAT.")
             return
-        radius = float(radius)
-        upperBound = int(upperBound)
+
+   
         if radius <= 0 or radius > 50 or upperBound <= 0 or upperBound > 20:
             self.receiveError(" ".join(msg), "Radius or Upper bound incorrect for WHATSAT.")
             return

@@ -54,7 +54,6 @@ class Server(LineReceiver):
 		self.lFile.write("error! {0}, server response: {1}".format(error,note))
 
 	def lineReceived(self, line):
-
 		print("lineReceived!")
 		if not len(line):
 			self.processError(line, "Line empty")
