@@ -122,9 +122,9 @@ class Server(LineReceiver):
 			return loc
 
 
-		def flood(self, message, from, exProp = True):
+		def flood(self, message, fromServer, exProp = True):
 			for serv in self.servList:
-				if exProp or serv != from:
+				if exProp or serv != fromServer:
 					self.lFile.write("Attempt to propogate info to " + serv + "\n")
 					reactor.connectTCP("localhost", PORT_NUM[serv], PropFactory(message, self.lFile))
 
