@@ -77,6 +77,7 @@ class Server(LineReceiver):
 
 
 	def connectionMade(self):
+		print("connectionMade!")
 		self.factory.numConn += 1
 		note = "Connection made, total connections = {0}".format(self.factory.numConn)
 		self.sendLine(note)
@@ -91,6 +92,7 @@ class Server(LineReceiver):
 		"""
 		As soon as any data is received, write it back.
 		"""
+		print("lineReceived!")
 		if len(line) == 0:
 			self.processError(line, "Line empty")
 			return
@@ -104,12 +106,15 @@ class Server(LineReceiver):
 		self.lFile.write("Client sent: " + data + "\n")
 
 		if msg[0] == "IAMAT":
+			print("we got an IAMAT!")
 # TODO
 			self.handle_IAMAT(msg)
 		elif msg[0] == "AT":
+			print("we got an AT!")
 #TODO
 			self.handle_AT(msg)
 		elif msg[0] == "WHATSAT":
+			print("we got a WHATSAY!")
 #TODO
 			self.handle_WHATSAT(msg)
 		else:
@@ -129,6 +134,7 @@ class Server(LineReceiver):
 					reactor.connectTCP("localhost", PORT_NUM[serv], PropFactory(message, self.lFile))
 
 		def handle_IAMAT(self, message):
+			print("trying to handle iamat!")
 			if len(message) != 4:
 				self.processError(" ".join(message), "IAMAT takes 4 args")
 			if "-" not in message[2] and "+" not in message[2]:
@@ -168,6 +174,7 @@ class Server(LineReceiver):
 
 
 		def makeATstring(self, ctime, data):
+			print("tying to make at string!")
 			timeChange = time.time() - float(ctime)
 			timeChange = str(timeChange)
 			if timeChange[0] != '-':
@@ -176,6 +183,7 @@ class Server(LineReceiver):
 			return "AT " + self.serverName + " " + timeChange + " " + data
 
 		def handle_AT(self, message):
+			print("trying to handle at!")
 			if len(message) != 6:
 				self.processError(" ".join(message), "AT requires 6 parameters")
 				return
@@ -211,6 +219,7 @@ class Server(LineReceiver):
 					self.flood(newATstring, orig, False)
 
 		def handle_WHATSAT(self, message):
+			print("trying t ohandle whatsay!")
 			if len(message)!= 4:
 				self.processError(" ".join(message), "WHATSAT requires 4 parameters")
 				return
@@ -248,6 +257,7 @@ class Server(LineReceiver):
 			pageGot.addErrBack(self.handle_GOOGERR, message=message)
 
 		def handle_JSON(self, data, limit, client):
+			print("chandling json!")
 			placejson = json.loads(data)
 			placejson["results"] = placejson["results"][:limit]
 			jsonBLOB = json.dumps(placejson, indent = 3, separators = (',', ': '))
@@ -270,9 +280,11 @@ class ServFactory(Factory):
 		self.clients = {}
 
 	def buildProtocol(self, port):
+		print("tryna build prtocol!")
 		return Server(self)
 
 	def startFactory(self):
+		print("startin factory!")
 		self.lFile = open(self.log, "a")
 		self.lFile.write("Creating log for {0} \n".format(self.name))
 
