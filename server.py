@@ -129,7 +129,7 @@ class Server(LineReceiver):
 		print("self name : " + self.name)
 		print(data)
 		self.clients[self.name] = data
-		for client in clients:
+		for client in self.clients:
 			print ("looping " + client)
 		atMessage = self.makeATstring(ctime, data)
 		self.sendLine(atMessage)
