@@ -71,17 +71,13 @@ class Server(LineReceiver):
 				reactor.connectTCP("localhost", conf.PORT_NUM[serv], FloodFactory(message, self.lFile))
 
 	def handleIAMAT(self, message):
-		print("trying to handle iamat!")
 		if len(message) != 4:
 			self.processError(" ".join(message), "IAMAT takes 4 args")
 		if "-" not in message[2] and "+" not in message[2]:
 			self.processError(" ".join(message), "Improper location, must have + or -")
 		
 		cmdAT, self.name, loc, ctime = message
-		#self.name = message[1]
-		#loc = message[2]
 
-		#loc = self.splitLoc(loc)
 		loc = loc.replace("-", " -")
 		loc = loc.replace("+", " +")
 		loc = loc.split()
@@ -235,7 +231,7 @@ class Flood(Protocol):
 	def __init__(self, message):
 		self.message = message
 	def connectionMade(self):
-		self.transport.write(self.message)
+		self.sendLine(self.message)
 		self.transport.loseConnection()
 
 
