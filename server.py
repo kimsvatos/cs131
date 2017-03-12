@@ -68,7 +68,7 @@ class Server(LineReceiver):
 		for serv in self.servList:
 			if exProp or serv != fromServer:
 				self.lFile.write("Attempt to propogate info to " + serv + "\n")
-				reactor.connectTCP("localhost", conf.PORT_NUM[serv], PropFactory(message, self.lFile))
+				reactor.connectTCP("localhost", conf.PORT_NUM[serv], FloodFactory(message, self.lFile))
 
 	def handleIAMAT(self, message):
 		print("trying to handle iamat!")
@@ -209,7 +209,7 @@ class Server(LineReceiver):
 		res = self.makeATstring(ctime, savedData) + "\n" + jsonBLOB
 		res = res.rstrip("\n") + "\n\n"
 		self.transport.write(res)
-		self.lFile.write("server responds :\n " + res + "\n")
+		self.lFile.write("Server responds :\n " + res + "\n")
 
 
 class ServFactory(Factory):
@@ -231,7 +231,7 @@ class ServFactory(Factory):
 
 
 
-class Prop(Protocol):
+class Flood(Protocol):
 	def __init__(self, message):
 		self.message = message
 	def connectionMade(self):
@@ -239,7 +239,7 @@ class Prop(Protocol):
 		self.transport.loseConnection()
 
 
-class PropFactory(Factory):
+class FloodFactory(Factory):
 	def __init__(self, message, lFile):
 		self.message = message + "\r\n"
 		self.lFile = lFile
@@ -247,7 +247,7 @@ class PropFactory(Factory):
 	def startedConnecting(self, conn):
 		return
 	def buildProtocol(self, port):
-		return Prop(self.message)
+		return Flood(self.message)
 
 	def clientConnectionLost(self, conn, why):
 		self.lFile.write("Propogation connection lost because: {0}\n".format(why))
