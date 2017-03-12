@@ -231,7 +231,7 @@ class Flood(Protocol):
 	def __init__(self, message):
 		self.message = message
 	def connectionMade(self):
-		self.sendLine(self.message)
+		self.transport.write(self.message)
 		self.transport.loseConnection()
 
 
